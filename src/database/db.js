@@ -19,12 +19,13 @@ import { v4 as uuidv4 } from 'uuid';
 export let userId = 'user_5a5082f0-e649-4170-b1b6-120dc58f6276'
 
 const firebaseApp = initializeApp({
-    apiKey: "AIzaSyDpVmW_TlGtXXZBaN12OV8eRBV8xsrCQ4w",
-    authDomain: "rhaz-website.firebaseapp.com",
-    projectId: "rhaz-website",
-    storageBucket: "rhaz-website.appspot.com",
-    messagingSenderId: "352231566956",
-    appId: "1:352231566956:web:551f88c4e93997f871b249"
+    apiKey: "AIzaSyB3AQKEctPrt6NWteU-EZlESvbpgY15JTA",
+    authDomain: "cashflow-ba925.firebaseapp.com",
+    projectId: "cashflow-ba925",
+    storageBucket: "cashflow-ba925.appspot.com",
+    messagingSenderId: "413059469683",
+    appId: "1:413059469683:web:1ccfba66b8cdaf5532f506",
+    measurementId: "G-5M7CGFGQLY"
 })
 
 const db = getFirestore(firebaseApp)

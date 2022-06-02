@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "rhaz-website"
-  }
+    "default": "cashflow-ba925",
+    "production": "cashflow-ba925"
+  },
+  "targets": {}
 }
