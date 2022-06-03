@@ -1,9 +1,9 @@
-# Rhaz's Person Website
+# Cashflow - Understand your payments
 
 Hello!  This is the repository for my project Cashflow.
 https://cashflow.rhaz.me
 
-This website is a presentation of me, as a developer, to the world.  My intention is to build on it over time and improve it as I go.
+This web app is designed to help you organise and view your transactions.
 
 It is built using React and TailwindCSS, mostly because these are two technologies I would like to gain experience in.
 
