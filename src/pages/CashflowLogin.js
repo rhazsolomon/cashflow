@@ -11,14 +11,7 @@ import BounceButton from "../components/BounceButton"
 
 
 
-const TopBit = () => {
-    return (
-        <div className="flex font-bold bg-rhaz-minor-grey rounded-t-3xl">
-            <div className="w-full p-4 text-center bg-white rounded-t-3xl">Sign In</div>
-            <div className="w-full p-4 text-center rounded-bl-3xl rounded-t-3xl">Register</div>
-        </div>
-    )
-}
+
 
 const EmailInput = ({ setValue }) => {
     return (
@@ -50,6 +43,7 @@ const PasswordInput = ({ setValue }) => {
     )
 }
 const SignInForm = ({ setUser }) => {
+
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
     const signInAndSet = async () => {
@@ -57,31 +51,76 @@ const SignInForm = ({ setUser }) => {
         setUser(user)
     }
     return (
-        <div className="w-screen h-screen bg-rhaz-primary flex items-center justify-center text-rhaz-major-grey">
-            <form className=" bg-white rounded-3xl  shadow-xl flex flex-col gap-5">
-                <TopBit />
-                <div className="flex flex-col justify-center items-center gap-5 p-10 text-black">
-                    <div className="w-20 h-20 bg-red-300 rounded-3xl bg-rhaz-minor-grey flex items-center justify-center text-4xl text-rhaz-major-grey">
-                        <FaUser />
-                    </div>
 
-                    <EmailInput setValue={setEmail} />
-                    <PasswordInput setValue={setPassword} />
-                    <BounceButton className="bg-rhaz-primary text-white w-1/2 m-2 py-3 rounded-full">
-                        <div onClick={(e) => { e.preventDefault(); signInAndSet() }}>Sign In</div>
-                    </BounceButton>
-                    <BounceButton>
-                        <div className="text-rhaz-major-grey">register</div>
-                    </BounceButton>
-
+        <form>
+            <div className="flex flex-col justify-center items-center gap-5 p-10 text-black">
+                <div className="w-20 h-20 bg-red-300 rounded-3xl bg-rhaz-minor-grey flex items-center justify-center text-4xl text-rhaz-major-grey">
+                    <FaUser />
                 </div>
+                <EmailInput setValue={setEmail} />
+                <PasswordInput setValue={setPassword} />
+                <BounceButton className="bg-rhaz-primary text-white w-1/2 m-2 py-3 rounded-full">
+                    <div onClick={(e) => { e.preventDefault(); signInAndSet() }}>Sign In</div>
+                </BounceButton>
+                <BounceButton>
+                    <div className="text-rhaz-major-grey">register</div>
+                </BounceButton>
+            </div>
+        </form>
 
-            </form>
-
-        </div>
 
     )
 
+}
+
+const RegisterForm = ({ setUser }) => {
+    return (
+        <VStack className='h-full items-center justify-center'>
+            <BounceButton
+                className='h-auto p-6 bg-slate-100 rounded-2xl border-[1px]'
+                onClick={() => {
+                    // const accountId = await backend.createFakeAccount()
+                    // setUser(accountId)
+                }}
+            >
+                Use fake account
+            </BounceButton>
+        </VStack>
+    )
+}
+
+const WelcomeForm = ({ setUser }) => {
+    const [idx, setIdx] = useState(0)
+
+
+    const TopBit = () => {
+        return (
+            <div className="flex font-bold bg-rhaz-minor-grey rounded-t-3xl">
+                <div
+                    className={`w-full p-4 text-center rounded-t-3xl ${idx == 0 ? 'bg-white' : ''}`}
+                    onClick={() => { setIdx(0) }}
+                >
+                    Sign In
+                </div>
+                <div
+                    className={`w-full p-4 text-center rounded-t-3xl ${idx == 1 ? 'bg-white' : ''}`}
+                    onClick={() => { setIdx(1) }}
+                >
+                    Register
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className="w-screen h-screen bg-rhaz-primary flex items-center justify-center text-rhaz-major-grey">
+            <div className=" bg-white rounded-3xl  shadow-xl flex flex-col gap-5 w-1/2 h-[30rem]">
+                <TopBit />
+                {idx === 0 && (<SignInForm setUser={setUser} />)}
+                {idx === 1 && (<RegisterForm setUser={setUser} />)}
+            </div>
+        </div>
+    )
 }
 
 
@@ -90,7 +129,7 @@ const CashflowLogin = () => {
 
     return (
         <div>
-            {!user && <SignInForm setUser={setUser} />}
+            {!user && <WelcomeForm setUser={setUser} />}
             {user && <Cashflow />}
         </div>
     )
