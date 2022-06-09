@@ -9,6 +9,7 @@ import { FaDollarSign, FaEnvira, FaTag, FaPlus, FaArrowUp, FaFilter, FaTrash } f
 import PieChart from "../components/PieChart";
 import { addTransaction, dbSet, deleteTransaction, streamTransactions, streamCategories, streamTags, userId } from "../database/db";
 import BounceButton from "../components/BounceButton";
+import backend from "../backend/backend"
 
 
 const orderByOptions = ['Date', 'Amount']
@@ -23,8 +24,6 @@ const TransactionElementAmount = ({ amount }) => {
     )
 }
 const TransactionElementCategory = ({ category, categories }) => {
-    console.log(category)
-    console.log(categories)
     return (
         <BounceButton>
             <HStack className="gap-2 border-[1pt] h-auto w-auto py-1 px-2 rounded-lg" style={{ borderColor: getColor(categories, category) }}>
@@ -129,8 +128,6 @@ const Filter = ({ filteredTagIds, setFilteredTagIds, orderByIdx, setOrderByIdx, 
     )
 }
 
-
-
 function getColor(categories, categoryId) {
     if (categoryId === null) {
         return 'rgba(100, 100, 100, 0.5)'
@@ -162,7 +159,6 @@ function getLabel(categories, categoryId) {
 }
 const Cashflow = () => {
 
-    console.log(process.env.REACT_APP_VERSION_INFO)
     const [allTransactions, setAllTransactions] = useState([])
     const [categories, setCategories] = useState([])
     const [tags, setTags] = useState([])
@@ -207,34 +203,7 @@ const Cashflow = () => {
     }
 
     async function handleFileInput(e) {
-        const file = e.target.files[0]
-        const text = await file.text()
-        const transactionHints = parseCSV(text)
-
-        const transactionHintToTransaction = (th) => {
-            const [day, month, year] = th['Date'].split('/')
-            return {
-                category: 'category_8A13196D-5F8C-4FC6-934F-979ECA2FA9AD',
-                amount: Math.abs(Number.parseFloat(th['Amount'])),
-                date: new Date(year, month, day),
-                tags: []
-            }
-        }
-        const isValidTransactionHint = (th) => {
-            try {
-                transactionHintToTransaction(th)
-                if (th['Amount'] === undefined) { return false }
-                if (th['Date'] === undefined) { return false }
-                return true
-            } catch (error) {
-                return false
-            }
-        }
-        const allNewTransactions = transactionHints.filter(isValidTransactionHint).map(transactionHintToTransaction)
-        allNewTransactions.map((t) => {
-            addTransaction(userId, t.amount, t.date, [], null)
-        })
-
+        const allNewTransactions = await backend.processBankFile(e.target.files[0])
         setAllTransactions(allNewTransactions)
     }
 
@@ -278,10 +247,16 @@ const Cashflow = () => {
     }, [setAllTransactions])
 
     useEffect(() => console.log("And again"), [])
+
+    const FileInput = ({ handleFileInput }) => {
+        return (
+            <input type={'file'} onChange={handleFileInput} />
+        )
+    }
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-[#272727] text-white w-screen font-rhaz text-sm'>
             <VStack className='max-w-[500px] overflow-y-auto h-full bg-[#222222]'>
-                <input type={'file'} onChange={handleFileInput} />
+                <FileInput handleFileInput={handleFileInput} />
                 <Filter filteredTagIds={filteredTagIds} setFilteredTagIds={setFilteredTagIds} orderByIdx={orderByIdx} setOrderByIdx={setOrderByIdx} orderAscending={orderAscending} setOrderAscending={setOrderAscending} />
                 <TransactionList transactions={transactions} selectedCategoryId={selectedCategoryId} filteredTagIds={filteredTagIds} categories={categories} />
             </VStack>

@@ -108,7 +108,7 @@ export async function addUser(name, email) {
     return newUserId
 }
 
-export async function addTransaction(userId, amount, date, tagIds, categoryId) {
+export async function addTransaction(amount, date, tagIds, categoryId) {
     const newTransactionId = `transaction_${uuidv4()}`
 
     const userCol = collection(db, 'user')

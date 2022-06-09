@@ -11,4 +11,3 @@ class Transaction {
 
 t = Transaction.create(null)
 
-console.log(t)

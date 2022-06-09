@@ -79,8 +79,7 @@ const RegisterForm = ({ setUser }) => {
             <BounceButton
                 className='h-auto p-6 bg-slate-100 rounded-2xl border-[1px]'
                 onClick={() => {
-                    // const accountId = await backend.createFakeAccount()
-                    // setUser(accountId)
+                    setUser('user_7544046c-49b8-492c-94d4-f9c977e73b95')
                 }}
             >
                 Use fake account
