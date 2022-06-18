@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { FaUserInjured } from "react-icons/fa";
 import BounceButton from "../components/BounceButton";
-import { createNewUserWithDefaults } from "../database/db";
+import { createNewUserWithDefaults } from "../backend/db";
 import { v4 as uuidv4 } from 'uuid';
 import VStack from "../components/VStack";
 

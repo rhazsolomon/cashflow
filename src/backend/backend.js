@@ -1,5 +1,5 @@
-import { addTransaction } from "../database/db"
-import { parseCSV } from "../utility/util"
+import { addTransaction } from "./db"
+import { parseCSV } from "./util"
 
 const backend = {
     processBankFile: async (file) => {
@@ -33,5 +33,14 @@ const backend = {
     }
 
 }
+
+
+function getPayments() {
+    return [
+        new Payment(34, ["night", "day"]),
+        new Payment(24, ["night", "bill"])
+    ]
+}
+
 
 export default backend;
