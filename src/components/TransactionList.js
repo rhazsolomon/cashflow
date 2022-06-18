@@ -1,7 +1,6 @@
 import HStack from "./HStack"
 import VStack from "./VStack"
 
-import { subset } from "../backend/util";
 import { FaDollarSign, FaEnvira, FaTag, FaPlus, FaTrash } from "react-icons/fa";
 import { deleteTransaction } from "../backend/db";
 import BounceButton from "./BounceButton";
@@ -10,10 +9,9 @@ import BounceButton from "./BounceButton";
 const TransactionElementTag = ({ tag_id }) => {
     let content = (<FaPlus />)
     if (tag_id) {
-        const tag = tagMap[tag_id]
         content = (<>
             <FaTag style={{ fill: 'border-gray-500' }} />
-            <span>{tag}</span>
+            <span>{tag_id}</span>
         </>)
     }
     return (
@@ -84,26 +82,23 @@ const TransactionElementCategory = ({ category, categories }) => {
 
 
 const TransactionElement = ({ transaction, categories }) => {
-    transaction.category = "4568"
     return (
         <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto'>
-            <BounceButton onClick={() => deleteTransaction(transaction.id)}>
-                <FaTrash />
-            </BounceButton>
 
-            <div className="w-1 h-full  rounded ml-2"
-                style={{ backgroundColor: getColor(categories, transaction.categoryId) }}>
-            </div>
             <VStack className='max-w-[600px] h-auto  '>
                 <HStack className="w-full h-auto">
-                    <TransactionElementCategory category={transaction.categoryId} categories={categories} />
                     <TransactionElementAmount amount={transaction.amount} />
                 </HStack>
                 <div className="flex-wrap flex py-2 h-auto gap-2">
                     {transaction.tags?.map(t => (<TransactionElementTag tag_id={t} key={t.id + transaction.id} />))}
                     <TransactionElementTag />
                 </div>
-                <div>{new Date(transaction.date.seconds).toDateString()}</div>
+                <HStack className='gap-3'>
+                    <BounceButton onClick={() => deleteTransaction(transaction.id)}>
+                        <FaTrash />
+                    </BounceButton>
+                    {new Date(transaction.date.seconds).toDateString()}
+                </HStack>
             </VStack>
         </HStack>
     )
@@ -112,7 +107,7 @@ const TransactionElement = ({ transaction, categories }) => {
 
 const TransactionList = ({ transactions, categories }) => {
     return (
-        <VStack className=' overflow-y-auto scrollbar-hide items-start justify-start'>
+        <VStack className='h-full overflow-y-auto scrollbar-hide items-start justify-start'>
             {transactions.map(t => (
                 <TransactionElement transaction={t} key={t.id} categories={categories} />
             ))}

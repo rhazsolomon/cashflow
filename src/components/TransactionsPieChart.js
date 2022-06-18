@@ -1,4 +1,9 @@
+import { useEffect, useState } from "react";
 import { PieChart as Pie } from "react-minimal-pie-chart";
+import { computePieDataFromTransactionTags, computeTotalAmount, getAllTags } from "../backend/backend";
+import { setToMap } from "../backend/util";
+import HStack from "./HStack";
+import VStack from "./VStack";
 
 const PieChartValue = ({ data, d }) => {
     const total = data.reduce((a, b) => a + b.value, 0)
@@ -23,41 +28,58 @@ const PieChartValue = ({ data, d }) => {
 }
 
 
-function getColor(categories, categoryId) {
-    if (categoryId === null) {
-        return 'rgba(100, 100, 100, 0.5)'
+
+const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
+    const LegendRow = ({tag, color}) => {
+        return (
+            <HStack className='gap-2'>
+                <input 
+                    type={"color"} 
+                    value={color} 
+                    onChange={e => setTagColorMap({...tagColorMap, [tag]: e.target.value })
+                }/>
+                {tag}
+            </HStack>
+        )
     }
-    if (categories === undefined) {
-        return 'blue'
-    }
-    const filtered = categories.filter(c => c.id == categoryId)
-    if (filtered.length) {
-        return filtered[0].color
-    } else {
-        return 'red'
-    }
+    console.log("color map", tagColorMap)
+    return (
+        <VStack className='gap-2'>
+            {Object.entries(tagColorMap).map((a) => (<LegendRow tag={a[0]} color={a[1]}/>))}
+        </VStack>
+    )
 }
 
-
-
-const TransactionsPieChart = ({ categories, transactions, selectedCategoryId, setSelectedCategoryId }) => {
-
-    function computePieDataFromTransactions(transactions) {
-        let categoryToAmount = {}
-
-        for (let t of transactions) {
-            if (categoryToAmount[t.categoryId] === undefined) { categoryToAmount[t.categoryId] = 0 }
-            categoryToAmount[t.categoryId] = categoryToAmount[t.categoryId] + Number.parseFloat(t.amount)
-        }
-        const data = []
-        for (const [key, value] of Object.entries(categoryToAmount)) {
-            data.push({ name: key, value: value, color: getColor(categories, key) })
-        }
-        const ret = data.sort((a, b) => a.name.localeCompare(b.name))
-        return ret
+const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCategoryId }) => {
+    if (!transactions) {
+        return (<div>Nothing here</div>)
     }
+    function generateTagColorMap(tags) {
+        // TODO rework this bit
+        const defaultColors = [
+            "#033f63",
+            "#28666e",
+            "#7c9885",
+            "#b5b682",
+            "#fedc97"
+        ]
+        const initialTagColorMap = {}
+        for (let i in tags) {
+            initialTagColorMap[tags[i]] = defaultColors[i%defaultColors.length]
+        }
+        return initialTagColorMap
+    }
+    const allTags = getAllTags(transactions)
+    
+    const [tagColorMap, setTagColorMap] = useState(generateTagColorMap(allTags))
+    
+    useEffect(() => {
+        const allTags = getAllTags(transactions)
+        setTagColorMap(generateTagColorMap(allTags))
+    }, [transactions])
 
-    const data = computePieDataFromTransactions(transactions)
+    const data = computePieDataFromTransactionTags(transactions)
+    
     const computeSegmentsShift = (i) => {
         if (data[i].name === selectedCategoryId) { return 4 }
         return 0
@@ -77,36 +99,43 @@ const TransactionsPieChart = ({ categories, transactions, selectedCategoryId, se
         if (selectedCategoryId !== null) {
             opacity = data[i].name === selectedCategoryId ? '100%' : '20%'
         }
+
         return {
             transition: selectedCategoryId === data[i].name ? friendlyTransition : assertiveTransition,
-            stroke: data[i].color,
-            opacity: opacity
+            stroke: tagColorMap[data[i].name],
+            opacity: opacity,
+            
         }
     }
 
     return (
-        <div className="relative w-full h-full max-h-80 max-w-80">
-            <div className=" w-full h-full absolute">
-                <Pie
-                    key={'234'}
-                    data={data}
-                    lineWidth={40}
-                    onClick={(e, i) => { toggleSelectedIndex(i) }}
-                    segmentsShift={computeSegmentsShift}
-                    rounded={false}
-                    radius={40}
-                    segmentsStyle={computeSegmentsStyle}
-                    className={''}
-                    onMouseOver={(e) => { e.target.style.opacity = '90%' }}
-                    onMouseOut={(e) => { e.target.style.opacity = '100%' }}
-                    label={() => { }}
-                    labelPosition={50}
-                    labelStyle={{}}
+        <HStack className='w-full h-full'>
+            <div className="relative w-full h-full max-h-80 max-w-80">
+                <div className=" w-full h-full absolute">
+                    <Pie
+                        key={'234'}
+                        data={data}
+                        lineWidth={40}
+                        onClick={(e, i) => { toggleSelectedIndex(i) }}
+                        segmentsShift={computeSegmentsShift}
+                        rounded={false}
+                        radius={40}
+                        segmentsStyle={computeSegmentsStyle}
+                        className={''}
+                        onMouseOver={(e) => { e.target.style.opacity = '90%' }}
+                        onMouseOut={(e) => { e.target.style.opacity = '100%' }}
+                        label={() => { }}
+                        labelPosition={50}
+                        labelStyle={{}}
 
-                />
+                    />
+                </div>
+                <PieChartValue data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
             </div>
-            <PieChartValue data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
-        </div>
+            <PieChartLegend tagColorMap={tagColorMap} setTagColorMap={setTagColorMap}/>
+
+        </HStack>
+        
     )
 }
 

@@ -108,20 +108,17 @@ export async function addUser(name, email) {
     return newUserId
 }
 
-export async function addTransaction(amount, date, tagIds, categoryId) {
-    const newTransactionId = `transaction_${uuidv4()}`
-
+export async function addTransaction(transaction) {
     const userCol = collection(db, 'user')
     const userDoc = doc(userCol, userId)
-    await setDoc(doc(userDoc, 'transaction', newTransactionId), {
-        id: newTransactionId,
-        amount: amount,
-        date: date,
-        created: new Date(),
-        tagIds: tagIds,
-        categoryId: categoryId
+    await setDoc(doc(userDoc, 'transaction', transaction.id), {
+        id: transaction.id,
+        amount: transaction.amount,
+        date: transaction.date,
+        created: transaction.created,
+        tags: transaction.tags,
     })
-    return newTransactionId
+    return transaction
 }
 
 export async function createNewUserWithDefaults(name, email) {
@@ -152,6 +149,12 @@ export async function deleteTransaction(transactionId) {
     const userDoc = doc(userCol, userId)
     await deleteDoc(doc(userDoc, "transaction", transactionId));
 
+}
+
+export async function deleteTransactions(transactionIds) {
+    transactionIds.forEach(id => {
+        deleteTransaction(id)
+    });
 }
 
 

@@ -37,6 +37,15 @@ function range(n) {
     return ret
 }
 
+export function setToMap(set, defFunc) {
+    const ret = {}
+    for (let s of set){
+        ret[s] = defFunc()
+    }
+    console.log("yo")
+    console.log(ret)
+    return ret
+}
 export function parseCSV(text) {
     const lines = text.split('\r\n')
     const headers = lines[0].split(',')
@@ -52,3 +61,16 @@ export function parseCSV(text) {
     }
     return ret
 }
+
+export class DefaultDict {
+    constructor(defaultInit) {
+      return new Proxy({}, {
+        get: (target, name) => name in target ?
+          target[name] :
+          (target[name] = typeof defaultInit === 'function' ?
+            new defaultInit().valueOf() :
+            defaultInit)
+      })
+    }
+  }
+  

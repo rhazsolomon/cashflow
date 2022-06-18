@@ -8,6 +8,7 @@ import TransactionList from "../components/TransactionList";
 import TransactionFilter from "../components/TransactionFilter";
 import TransactionsFileInput from "../components/TransactionsFileInput";
 import CashflowUserInfo from "../components/CashflowUserInfo";
+import CashflowUtilities from "../components/CashflowUtilities";
 
 const Cashflow = () => {
 
@@ -49,10 +50,13 @@ const Cashflow = () => {
         }
     }, [setAllTransactions, setSievedTransactions])
 
-    
+    useEffect(() => {
+        setSievedTransactions(allTransactions)
+    }, [allTransactions])
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-[#272727] text-white w-screen font-rhaz text-sm'>
-            <VStack className='max-w-[500px] overflow-y-auto h-full bg-[#222222]'>
+            <VStack className='max-w-[500px] overflow-y-auto h-full bg-[#222222] w-full'>
+                <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
                 <CashflowUserInfo userId={userId}/>
                 <TransactionsFileInput setAllTransactions={setAllTransactions}/>
                 <TransactionFilter 

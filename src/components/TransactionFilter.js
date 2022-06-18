@@ -33,13 +33,15 @@ const FilterOrderByComponent = ({ orderBy, setOrderBy, orderAscending, setOrderA
 }
 
 
-const FilterFreeTextInput = ({setAmountLower, setAmountUpper}) => {
+const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag}) => {
     const [freeText, setFreeText] = useState("")
 
     function parseFreeText() {
+        console.log(freeText)
         const ret = {
             amountLower: null,
-            amountUpper: null
+            amountUpper: null,
+            tag: null
         }
         freeText.split(" ").forEach(a => {
             if (a.startsWith(">")) {
@@ -50,13 +52,19 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper}) => {
                 const n = Number.parseFloat(a.slice(1))
                 ret.amountUpper = n
             }
+            else if (a.startsWith("#")) {
+                console.log(a)
+                ret.tag = a.slice(1)
+            }
         })
+        console.log(ret)
         return ret
     }
     useEffect(() => {
         const result = parseFreeText()
         setAmountLower(result.amountLower)
         setAmountUpper(result.amountUpper)
+        setTag(result.tag)
     }, [freeText])
 
     return (
@@ -74,18 +82,26 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     
     const [amountLower, setAmountLower] = useState(null)
     const [amountUpper, setAmountUpper] = useState(null)
+    const [tag, setTag] = useState(null)
 
     const [orderBy, setOrderBy] = useState("Amount")
     const [orderAscending, setOrderAscending] = useState(true)
     
 
     function filterTransactions(a) {
+        console.log(a, "bye")
         if (amountLower && a.amount < amountLower) {
             return false
         }
         if (amountUpper && a.amount > amountUpper) {
             return false
         }
+        if (tag && !a.tags.includes(tag)){
+            console.log("hi")
+            return false
+        }
+
+        console.log(a, "hello")
         return true
         
     }
@@ -105,7 +121,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
             .sort(sortTransactions)
         )
     }
-    useEffect(sieveAndUpdate, [orderAscending, amountLower])
+    useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag])
 
     return (
         <HStack className='bg-[#272727] p-3 m-3 w-auto h-auto gap-2 rounded-xl border-[1px] border-slate-600'>
@@ -113,6 +129,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
                 setAmountUpper={setAmountUpper}
+                setTag={setTag}
             />
             <FilterOrderByComponent 
                 orderBy={orderBy} 
