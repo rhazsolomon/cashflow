@@ -33,16 +33,30 @@ const FilterOrderByComponent = ({ orderBy, setOrderBy, orderAscending, setOrderA
 }
 
 
-const FilterFreeTextInput = ({setAmountLower}) => {
+const FilterFreeTextInput = ({setAmountLower, setAmountUpper}) => {
     const [freeText, setFreeText] = useState("")
 
-    useEffect(() => {
+    function parseFreeText() {
+        const ret = {
+            amountLower: null,
+            amountUpper: null
+        }
         freeText.split(" ").forEach(a => {
             if (a.startsWith(">")) {
                 const n = Number.parseFloat(a.slice(1))
-                setAmountLower(n)
+                ret.amountLower = n
+            }
+            else if (a.startsWith("<")) {
+                const n = Number.parseFloat(a.slice(1))
+                ret.amountUpper = n
             }
         })
+        return ret
+    }
+    useEffect(() => {
+        const result = parseFreeText()
+        setAmountLower(result.amountLower)
+        setAmountUpper(result.amountUpper)
     }, [freeText])
 
     return (
@@ -58,7 +72,8 @@ const FilterFreeTextInput = ({setAmountLower}) => {
 
 const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     
-    const [amountLower, setAmountLower] = useState(30)
+    const [amountLower, setAmountLower] = useState(null)
+    const [amountUpper, setAmountUpper] = useState(null)
 
     const [orderBy, setOrderBy] = useState("Amount")
     const [orderAscending, setOrderAscending] = useState(true)
@@ -66,6 +81,9 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
 
     function filterTransactions(a) {
         if (amountLower && a.amount < amountLower) {
+            return false
+        }
+        if (amountUpper && a.amount > amountUpper) {
             return false
         }
         return true
@@ -94,6 +112,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
             <FaFilter />
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
+                setAmountUpper={setAmountUpper}
             />
             <FilterOrderByComponent 
                 orderBy={orderBy} 
