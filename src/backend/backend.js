@@ -4,9 +4,7 @@ import { parseCSV } from "../utility/util"
 const backend = {
     processBankFile: async (file) => {
         const text = await file.text()
-        console.log(text)
         const transactionHints = parseCSV(text)
-        console.log(transactionHints)
         const transactionHintToTransaction = (th) => {
             const [day, month, year] = th['Date'].split('/')
             return {

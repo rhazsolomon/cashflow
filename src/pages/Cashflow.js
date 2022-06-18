@@ -54,6 +54,7 @@ const TransactionElementTag = ({ tag_id }) => {
 }
 
 const TransactionElement = ({ transaction, categories }) => {
+    transaction.category = "4568"
     return (
         <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto'>
             <BounceButton onClick={() => deleteTransaction(transaction.id)}>
@@ -183,7 +184,6 @@ const Cashflow = () => {
         return orderAscending ? ret : -ret
     }
     const transactions = (allTransactions
-        // .filter(a => a.category == 'category_84A707AD-8E1C-4CC2-AA27-CE23036748BC')
         .sort(orderByFunction)
     )
 
@@ -229,6 +229,7 @@ const Cashflow = () => {
             (querySnapshot) => {
                 const updatedCategories = querySnapshot.docs.map(d => d.data())
                 setCategories(updatedCategories)
+                console.log(updatedCategories)
             },
             (error) => { console.log(error, "Error dude. (RS02)") }
         )
@@ -246,7 +247,7 @@ const Cashflow = () => {
         }
     }, [setAllTransactions])
 
-    useEffect(() => console.log("And again"), [])
+    useEffect(() => console.log(categories), [])
 
     const FileInput = ({ handleFileInput }) => {
         return (
@@ -256,6 +257,7 @@ const Cashflow = () => {
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-[#272727] text-white w-screen font-rhaz text-sm'>
             <VStack className='max-w-[500px] overflow-y-auto h-full bg-[#222222]'>
+                <div>{userId}</div>
                 <FileInput handleFileInput={handleFileInput} />
                 <Filter filteredTagIds={filteredTagIds} setFilteredTagIds={setFilteredTagIds} orderByIdx={orderByIdx} setOrderByIdx={setOrderByIdx} orderAscending={orderAscending} setOrderAscending={setOrderAscending} />
                 <TransactionList transactions={transactions} selectedCategoryId={selectedCategoryId} filteredTagIds={filteredTagIds} categories={categories} />

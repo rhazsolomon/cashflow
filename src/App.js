@@ -14,7 +14,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<CashflowLogin />} />
-        <Route path='/cashflow-admin' element={<CashflowAdmin />} />
+        <Route path='/admin' element={<CashflowAdmin />} />
       </Routes>
     </Router>
   );
