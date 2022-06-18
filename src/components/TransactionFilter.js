@@ -1,6 +1,6 @@
 import HStack from "./HStack";
 import VStack from "./VStack";
-import { FaArrowUp } from "react-icons/fa";
+import { FaArrowUp, FaFilter } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
 
@@ -47,9 +47,9 @@ const FilterFreeTextInput = ({setAmountLower}) => {
 
     return (
         <input 
-            className="text-white p-4 bg-slate-600 rounded-2xl font-semibold"
+            className="text-white px-3 py-1 bg-slate-600 rounded-2xl font-semibold"
             type={"text"} 
-            placeholder={">40 <120 after:2022-05-06 #bill"}
+            placeholder={">40"}
             value={freeText} onChange={(e) => {setFreeText(e.target.value)}}
         />
     )
@@ -90,10 +90,8 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     useEffect(sieveAndUpdate, [orderAscending, amountLower])
 
     return (
-        <VStack className='bg-[#272727] p-4 m-4 w-auto h-auto gap-2 rounded-xl border-[1px] border-slate-600'>
-            <div className="opacity-30">
-                TransactionFilterForm
-            </div>
+        <HStack className='bg-[#272727] p-3 m-3 w-auto h-auto gap-2 rounded-xl border-[1px] border-slate-600'>
+            <FaFilter />
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
             />
@@ -104,7 +102,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
                 setOrderAscending={setOrderAscending} 
                 orderByOptions={["amount", "date"]}
             />
-        </VStack >
+        </HStack >
         
     
     )

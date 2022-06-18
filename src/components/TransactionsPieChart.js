@@ -23,7 +23,41 @@ const PieChartValue = ({ data, d }) => {
 }
 
 
-const PieChart = ({ data, selectedCategoryId, setSelectedCategoryId }) => {
+function getColor(categories, categoryId) {
+    if (categoryId === null) {
+        return 'rgba(100, 100, 100, 0.5)'
+    }
+    if (categories === undefined) {
+        return 'blue'
+    }
+    const filtered = categories.filter(c => c.id == categoryId)
+    if (filtered.length) {
+        return filtered[0].color
+    } else {
+        return 'red'
+    }
+}
+
+
+
+const TransactionsPieChart = ({ categories, transactions, selectedCategoryId, setSelectedCategoryId }) => {
+
+    function computePieDataFromTransactions(transactions) {
+        let categoryToAmount = {}
+
+        for (let t of transactions) {
+            if (categoryToAmount[t.categoryId] === undefined) { categoryToAmount[t.categoryId] = 0 }
+            categoryToAmount[t.categoryId] = categoryToAmount[t.categoryId] + Number.parseFloat(t.amount)
+        }
+        const data = []
+        for (const [key, value] of Object.entries(categoryToAmount)) {
+            data.push({ name: key, value: value, color: getColor(categories, key) })
+        }
+        const ret = data.sort((a, b) => a.name.localeCompare(b.name))
+        return ret
+    }
+
+    const data = computePieDataFromTransactions(transactions)
     const computeSegmentsShift = (i) => {
         if (data[i].name === selectedCategoryId) { return 4 }
         return 0
@@ -76,4 +110,4 @@ const PieChart = ({ data, selectedCategoryId, setSelectedCategoryId }) => {
     )
 }
 
-export default PieChart;
+export default TransactionsPieChart;
