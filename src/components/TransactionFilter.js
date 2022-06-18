@@ -74,7 +74,7 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag}) => {
             
             <FiSearch className="text-[#5F6062]"/>
             <input 
-            className="   placeholder:text-[#5F6062]  bg-transparent "
+            className="   placeholder:text-[#5F6062]  bg-transparent w-full"
             type={"text"} 
             placeholder={"Search Transactions"}
             value={freeText} onChange={(e) => {setFreeText(e.target.value)}}
