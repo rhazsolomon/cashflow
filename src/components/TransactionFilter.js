@@ -1,7 +1,9 @@
 import HStack from "./HStack";
 import VStack from "./VStack";
-import { FaArrowUp, FaFilter } from "react-icons/fa";
+import { FaArrowUp, FaFilter, FaSearch } from "react-icons/fa";
+import {FiSearch} from "react-icons/fi"
 import { useEffect, useState } from "react";
+import BounceButton from "./BounceButton";
 
 
 const FilterOrderByComponent = ({ orderBy, setOrderBy, orderAscending, setOrderAscending }) => {
@@ -68,12 +70,18 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag}) => {
     }, [freeText])
 
     return (
-        <input 
-            className="text-white px-3 py-1 bg-slate-600 rounded-2xl font-semibold"
+        <HStack className="px-3 gap-2 py-1 border-[1px] text-[#C6C7C7] font-thin rounded-md border-[#393B3D] w-full">
+            
+            <FiSearch className="text-[#5F6062]"/>
+            <input 
+            className="   placeholder:text-[#5F6062]  bg-transparent "
             type={"text"} 
-            placeholder={">40"}
+            placeholder={"Search Transactions"}
             value={freeText} onChange={(e) => {setFreeText(e.target.value)}}
-        />
+            />
+
+        </HStack>
+        
     )
 }
 
@@ -124,20 +132,25 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag])
 
     return (
-        <HStack className='bg-[#272727] p-3 m-3 w-auto h-auto gap-2 rounded-xl border-[1px] border-slate-600'>
-            <FaFilter />
+        <HStack className=' p-4 w-full h-auto gap-2 '>
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
                 setAmountUpper={setAmountUpper}
                 setTag={setTag}
             />
-            <FilterOrderByComponent 
+            {/* <div className="text-slate-600">
+                <BounceButton>
+                    Advanced
+                </BounceButton>
+                
+            </div> */}
+            {/* <FilterOrderByComponent 
                 orderBy={orderBy} 
                 setOrderBy={setOrderBy} 
                 orderAscending={orderAscending} 
                 setOrderAscending={setOrderAscending} 
                 orderByOptions={["amount", "date"]}
-            />
+            /> */}
         </HStack >
         
     

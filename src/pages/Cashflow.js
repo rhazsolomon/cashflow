@@ -56,9 +56,9 @@ const Cashflow = () => {
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-[#272727] text-white w-screen font-rhaz text-sm'>
             <VStack className='max-w-[500px] overflow-y-auto h-full bg-[#222222] w-full'>
-                <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
-                <CashflowUserInfo userId={userId}/>
-                <TransactionsFileInput setAllTransactions={setAllTransactions}/>
+                {/* <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/> */}
+                {/* <CashflowUserInfo userId={userId}/> */}
+                {/* <TransactionsFileInput setAllTransactions={setAllTransactions}/> */}
                 <TransactionFilter 
                     allTransactions={allTransactions}
                     setSievedTransactions={setSievedTransactions}

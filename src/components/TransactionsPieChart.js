@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { PieChart as Pie } from "react-minimal-pie-chart";
-import { computePieDataFromTransactionTags, computeTotalAmount, getAllTags } from "../backend/backend";
-import { setToMap } from "../backend/util";
+import { computePieDataFromTransactionTags, getAllTags } from "../backend/backend";
 import HStack from "./HStack";
 import VStack from "./VStack";
 
@@ -28,7 +27,6 @@ const PieChartValue = ({ data, d }) => {
 }
 
 
-
 const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
     const LegendRow = ({tag, color}) => {
         return (
@@ -44,7 +42,7 @@ const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
     }
     console.log("color map", tagColorMap)
     return (
-        <VStack className='gap-2'>
+        <VStack className='gap-2 w-full'>
             {Object.entries(tagColorMap).map((a) => (<LegendRow tag={a[0]} color={a[1]}/>))}
         </VStack>
     )
@@ -109,32 +107,34 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
     }
 
     return (
-        <HStack className='w-full h-full'>
-            <div className="relative w-full h-full max-h-80 max-w-80">
-                <div className=" w-full h-full absolute">
-                    <Pie
-                        key={'234'}
-                        data={data}
-                        lineWidth={40}
-                        onClick={(e, i) => { toggleSelectedIndex(i) }}
-                        segmentsShift={computeSegmentsShift}
-                        rounded={false}
-                        radius={40}
-                        segmentsStyle={computeSegmentsStyle}
-                        className={''}
-                        onMouseOver={(e) => { e.target.style.opacity = '90%' }}
-                        onMouseOut={(e) => { e.target.style.opacity = '100%' }}
-                        label={() => { }}
-                        labelPosition={50}
-                        labelStyle={{}}
+        <HStack className='w-auto h-full'>
+            <HStack className='w-full h-full'>
+                <div className="relative w-80 h-80 max-h-80 max-w-80">
+                    <div className=" w-full h-full absolute">
+                        <Pie
+                            key={'234'}
+                            data={data}
+                            lineWidth={40}
+                            onClick={(e, i) => { toggleSelectedIndex(i) }}
+                            segmentsShift={computeSegmentsShift}
+                            rounded={false}
+                            radius={40}
+                            segmentsStyle={computeSegmentsStyle}
+                            className={''}
+                            onMouseOver={(e) => { e.target.style.opacity = '90%' }}
+                            onMouseOut={(e) => { e.target.style.opacity = '100%' }}
+                            label={() => { }}
+                            labelPosition={50}
+                            labelStyle={{}}
 
-                    />
+                        />
+                    </div>
+                    <PieChartValue data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
                 </div>
-                <PieChartValue data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
-            </div>
+            </HStack>
             <PieChartLegend tagColorMap={tagColorMap} setTagColorMap={setTagColorMap}/>
-
         </HStack>
+        
         
     )
 }

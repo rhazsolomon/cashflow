@@ -83,7 +83,7 @@ const TransactionElementCategory = ({ category, categories }) => {
 
 const TransactionElement = ({ transaction, categories }) => {
     return (
-        <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto'>
+        <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto w-full'>
 
             <VStack className='max-w-[600px] h-auto  '>
                 <HStack className="w-full h-auto">
