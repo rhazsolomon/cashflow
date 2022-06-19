@@ -12,7 +12,8 @@ import {
     limit,
     deleteDoc,
     orderBy,
-    onSnapshot
+    onSnapshot,
+    updateDoc
 } from 'firebase/firestore'
 import { v4 as uuidv4 } from 'uuid';
 
@@ -108,6 +109,13 @@ export async function addUser(name, email) {
     return newUserId
 }
 
+export async function updateTransactionTags(transaction, tags) {
+    const userCol = collection(db, 'user')
+    const userDoc = doc(userCol, userId)
+    await updateDoc(doc(userDoc, 'transaction', transaction.id), {
+        tags: tags
+    })
+}
 export async function addTransaction(transaction) {
     const userCol = collection(db, 'user')
     const userDoc = doc(userCol, userId)

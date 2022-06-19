@@ -70,14 +70,16 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag}) => {
     }, [freeText])
 
     return (
-        <HStack className="px-3 gap-2 py-1 border-[1px] text-[#C6C7C7] font-thin rounded-md border-[#393B3D] w-full">
+        <HStack 
+            className="px-3 gap-2 py-1 border-[1px] text-[#C6C7C7] font-thin rounded-md border-[#393B3D] w-full"
+        >
             
             <FiSearch className="text-[#5F6062]"/>
             <input 
-            className="   placeholder:text-[#5F6062]  bg-transparent w-full"
-            type={"text"} 
-            placeholder={"Search Transactions"}
-            value={freeText} onChange={(e) => {setFreeText(e.target.value)}}
+                className="   placeholder:text-[#5F6062]  bg-transparent w-full "
+                type={"text"} 
+                placeholder={"Search Transactions"}
+                value={freeText} onChange={(e) => {setFreeText(e.target.value)}}
             />
 
         </HStack>

@@ -49,8 +49,12 @@ const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
 }
 
 const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCategoryId }) => {
-    if (!transactions) {
-        return (<div>Nothing here</div>)
+    if (transactions.length == 0) {
+        return (
+            <div className="text-slate-500 text-center w-full">
+                Nothing here
+            </div>
+        )
     }
     function generateTagColorMap(tags) {
         // TODO rework this bit
@@ -126,7 +130,6 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
                             label={() => { }}
                             labelPosition={50}
                             labelStyle={{}}
-
                         />
                     </div>
                     <PieChartValue data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />

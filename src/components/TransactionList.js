@@ -2,8 +2,9 @@ import HStack from "./HStack"
 import VStack from "./VStack"
 
 import { FaDollarSign, FaEnvira, FaTag, FaPlus, FaTrash } from "react-icons/fa";
-import { deleteTransaction } from "../backend/db";
+import { deleteTransaction, updateTransactionTags } from "../backend/db";
 import BounceButton from "./BounceButton";
+import { useState } from "react";
 
 
 const TransactionElementTag = ({ tag_id }) => {
@@ -81,6 +82,55 @@ const TransactionElementCategory = ({ category, categories }) => {
 }
 
 
+const TransactionTags = ({transaction}) => {
+
+    let initialText = ""
+    for (let tag of transaction.tags) {
+        initialText += "#" + tag + " "
+    }
+    const [value, setValue] = useState(initialText)
+    const [editing, setEditing] = useState(false)
+    function onKeyDown(e) {
+        if (e.key == 'Enter') {
+            const tags = value.split(' ').filter(a => a.startsWith('#')).map(a => a.slice(1))
+            updateTransactionTags(transaction, tags)
+            setEditing(false)
+        }
+    }
+    return (
+        <div className="w-full p-2" onClick={() => setEditing(true)}>
+            {editing ? (
+                <input
+                autoFocus
+                type={"text"}
+                className={"px-3 py-1 border-[#393B3D] bg-[#222222] border-[1px] rounded-md w-full"}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                onKeyDown={onKeyDown}
+                />
+            ) : (
+                <BounceButton>
+                <HStack className='gap-2 w-full flex-wrap text-xs'>
+                    
+                        {transaction.tags.map(t => (
+                            <HStack className=" bg-[#7A7C7F] py-1 px-3 rounded-full gap-2">
+                                <FaTag style={{ fill: 'border-gray-500' }} />
+                                {t}
+                            </HStack>
+                        ))}
+                        {transaction.tags.length == 0 && (
+                            <HStack className="border-[#7A7C7F] text-[#7A7C7F] border-[1px] py-1 px-4 rounded-full gap-2">
+                                <FaTag style={{ fill: 'border-gray-500' }} />
+                                Add Tag
+                            </HStack>
+                        )}
+                  
+                </HStack>
+                </BounceButton>
+            )}
+        </div>
+    )
+}
 const TransactionElement = ({ transaction, categories }) => {
     return (
         <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto w-full'>
@@ -89,16 +139,17 @@ const TransactionElement = ({ transaction, categories }) => {
                 <HStack className="w-full h-auto">
                     <TransactionElementAmount amount={transaction.amount} />
                 </HStack>
-                <div className="flex-wrap flex py-2 h-auto gap-2">
+                {/* <div className="flex-wrap flex py-2 h-auto gap-2">
                     {transaction.tags?.map(t => (<TransactionElementTag tag_id={t} key={t.id + transaction.id} />))}
                     <TransactionElementTag />
-                </div>
+                </div> */}
                 <HStack className='gap-3'>
                     <BounceButton onClick={() => deleteTransaction(transaction.id)}>
                         <FaTrash />
                     </BounceButton>
                     {new Date(transaction.date.seconds).toDateString()}
                 </HStack>
+                <TransactionTags transaction={transaction}/>
             </VStack>
         </HStack>
     )
@@ -106,6 +157,13 @@ const TransactionElement = ({ transaction, categories }) => {
 
 
 const TransactionList = ({ transactions, categories }) => {
+    if (transactions.length == 0) {
+        return (
+            <div className="h-full w-full p-4 text-center text-[#5F6062]">
+                No Transactions Found
+            </div>
+        )
+    }
     return (
         <VStack className='h-full overflow-y-auto scrollbar-hide items-start justify-start'>
             {transactions.map(t => (
