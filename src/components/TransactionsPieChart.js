@@ -40,7 +40,6 @@ const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
             </HStack>
         )
     }
-    console.log("color map", tagColorMap)
     return (
         <VStack className='gap-2 w-full'>
             {Object.entries(tagColorMap).map((a) => (<LegendRow tag={a[0]} color={a[1]}/>))}

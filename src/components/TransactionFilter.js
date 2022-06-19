@@ -39,7 +39,7 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag}) => {
     const [freeText, setFreeText] = useState("")
 
     function parseFreeText() {
-        console.log(freeText)
+        
         const ret = {
             amountLower: null,
             amountUpper: null,
@@ -55,11 +55,9 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag}) => {
                 ret.amountUpper = n
             }
             else if (a.startsWith("#")) {
-                console.log(a)
                 ret.tag = a.slice(1)
             }
         })
-        console.log(ret)
         return ret
     }
     useEffect(() => {
@@ -99,7 +97,6 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     
 
     function filterTransactions(a) {
-        console.log(a, "bye")
         if (amountLower && a.amount < amountLower) {
             return false
         }
@@ -107,11 +104,8 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
             return false
         }
         if (tag && !a.tags.includes(tag)){
-            console.log("hi")
             return false
         }
-
-        console.log(a, "hello")
         return true
         
     }

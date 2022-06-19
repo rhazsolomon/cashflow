@@ -1,41 +1,38 @@
+import { async } from "@firebase/util"
 import { addTransaction } from "./db"
 import { Transaction } from "./model"
 import { DefaultDict, parseCSV, sample } from "./util"
 
 
-const backend = {
-    processBankFile: async (file) => {
-        const text = await file.text()
-        const transactionHints = parseCSV(text)
-        const transactionHintToTransaction = (th) => {
-            const [day, month, year] = th['Date'].split('/')
-            return {
-                category: 'category_8A13196D-5F8C-4FC6-934F-979ECA2FA9AD',
-                amount: Math.abs(Number.parseFloat(th['Amount'])),
-                date: new Date(year, month, day),
-                tags: []
-            }
-        }
-        const isValidTransactionHint = (th) => {
-            try {
-                transactionHintToTransaction(th)
-                if (th['Amount'] === undefined) { return false }
-                if (th['Date'] === undefined) { return false }
-                return true
-            } catch (error) {
-                return false
-            }
-        }
-        const allNewTransactions = transactionHints.filter(isValidTransactionHint).map(transactionHintToTransaction)
+export async function processBankFile(file) {
+    const text = await file.text()
+    const transactionHints = parseCSV(text)
 
-        allNewTransactions.map((t) => {
-            addTransaction(t.amount, t.date, [], null)
-        })
-        return allNewTransactions
+    function transactionHintToTransaction(th) {
+        const [day, month, year] = th['Date'].split('/')
+        return Transaction.create(
+            Math.abs(Number.parseFloat(th['Amount'])),
+            [],
+            new Date(year, month, day)
+        )
     }
+    const isValidTransactionHint = (th) => {
+        try {
+            transactionHintToTransaction(th)
+            if (th['Amount'] === undefined) { return false }
+            if (th['Date'] === undefined) { return false }
+            return true
+        } catch (error) {
+            return false
+        }
+    }
+    const allNewTransactions = transactionHints.filter(isValidTransactionHint).map(transactionHintToTransaction)
 
+    allNewTransactions.map((t) => {
+        addTransaction(t)
+    })
+    return allNewTransactions
 }
-
 
 function getPayments() {
     return [
@@ -108,7 +105,6 @@ export function computePieDataFromTransactionTags(transactions, relevantTags=nul
     const defaultDict = new DefaultDict(0)
     for (let t of transactions) {
         const tagToAmount = computeTagToAmount(t, relevantTags)
-        console.log(tagToAmount)
         for (let a of tagToAmount){
             defaultDict[a.name] = defaultDict[a.name] + a.value
         }
@@ -141,6 +137,3 @@ export function computePieDataFromTransactions(transactions) {
     const ret = data.sort((a, b) => a.name.localeCompare(b.name))
     return ret
 }
-
-
-export default backend;

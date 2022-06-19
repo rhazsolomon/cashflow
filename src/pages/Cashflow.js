@@ -9,6 +9,7 @@ import TransactionFilter from "../components/TransactionFilter";
 import TransactionsFileInput from "../components/TransactionsFileInput";
 import CashflowUserInfo from "../components/CashflowUserInfo";
 import CashflowUtilities from "../components/CashflowUtilities";
+import { Transaction } from "../backend/model";
 
 const Cashflow = () => {
 
@@ -22,7 +23,7 @@ const Cashflow = () => {
     useEffect(() => {
         const unsubscribeTransactions = streamTransactions(
             (querySnapshot) => {
-                const updatedTransactions = querySnapshot.docs.map(d => d.data())
+                const updatedTransactions = querySnapshot.docs.map(d => Transaction.createFromData(d.data())  )
                 setAllTransactions(updatedTransactions)
                 setSievedTransactions(updatedTransactions)
             },

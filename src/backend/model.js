@@ -15,4 +15,15 @@ export class Transaction {
         return new Transaction(id, amount, tags, created, date)
     }
 
+    static createFromData(data) {
+        console.log(data)
+        console.log("yo")
+        // return data
+        console.log("data", data)
+        console.log("datas", new Date(data.date.seconds))
+        const a = new Date(data.date.seconds)
+        console.log("hello", a)
+        
+        return new Transaction(data.id, data.amount, data.tags, data.created, data.date)
+    }
 }

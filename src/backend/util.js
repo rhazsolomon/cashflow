@@ -42,8 +42,6 @@ export function setToMap(set, defFunc) {
     for (let s of set){
         ret[s] = defFunc()
     }
-    console.log("yo")
-    console.log(ret)
     return ret
 }
 export function parseCSV(text) {

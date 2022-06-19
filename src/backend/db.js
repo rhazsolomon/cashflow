@@ -156,7 +156,6 @@ export async function deleteTransaction(transactionId) {
     const userCol = collection(db, 'user')
     const userDoc = doc(userCol, userId)
     await deleteDoc(doc(userDoc, "transaction", transactionId));
-
 }
 
 export async function deleteTransactions(transactionIds) {

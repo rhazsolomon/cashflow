@@ -132,6 +132,7 @@ const TransactionTags = ({transaction}) => {
     )
 }
 const TransactionElement = ({ transaction, categories }) => {
+    console.log(Object.keys(transaction.date))
     return (
         <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto w-full'>
 
@@ -147,7 +148,7 @@ const TransactionElement = ({ transaction, categories }) => {
                     <BounceButton onClick={() => deleteTransaction(transaction.id)}>
                         <FaTrash />
                     </BounceButton>
-                    {new Date(transaction.date.seconds).toDateString()}
+                    {typeof(transaction.date)}
                 </HStack>
                 <TransactionTags transaction={transaction}/>
             </VStack>
