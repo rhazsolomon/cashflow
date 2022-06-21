@@ -1,11 +1,12 @@
 import HStack from "./HStack"
 import VStack from "./VStack"
 
-import { FaTrash, FaLock } from "react-icons/fa";
+import { FaTrash, FaLock, FaArrowRight } from "react-icons/fa";
 import { deleteTransaction, updateTransactionTags } from "../backend/db";
 import BounceButton from "./BounceButton";
 import { useState } from "react";
 import { Tags } from "./Tags";
+import { FiArrowRight, FiChevronRight } from "react-icons/fi";
 
 
 const TransactionElementAmount = ({ amount }) => {
@@ -19,14 +20,20 @@ const TransactionElementAmount = ({ amount }) => {
 const TransactionElementMeta = ({ meta }) => {
     const [hidden, setHidden] = useState(true)
     return (
-        <BounceButton onClick={() => setHidden(!hidden)}>
-            {/* <VStack className="p-2 gap-3 text-left border-[1px] border-slate-700 rounded bg-[#2D2D2D] text-gray-500"> */}
+        
             <VStack className="p-2 gap-3 text-left  rounded bg-[#2D2D2D] text-gray-500">
                 <HStack className='gap-2'>
                     <FaLock />
-                    <div>
+                    <div className="whitespace-nowrap">
                         {meta["Other Party"]}
                     </div>
+                    <HStack className='w-full justify-end'>
+                    <BounceButton onClick={() => setHidden(!hidden)}>
+                        <FiChevronRight />
+                        </BounceButton>
+                    </HStack>
+                        
+                    
                 </HStack>
 
                 {!hidden && (
@@ -40,7 +47,7 @@ const TransactionElementMeta = ({ meta }) => {
                     </div>
                 )}
             </VStack>
-        </BounceButton>
+        
 
     )
 }
