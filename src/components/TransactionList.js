@@ -82,6 +82,7 @@ const TransactionElementCategory = ({ category, categories }) => {
 }
 
 
+
 const TransactionTags = ({transaction}) => {
 
     let initialText = ""

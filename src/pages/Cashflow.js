@@ -10,6 +10,7 @@ import TransactionsFileInput from "../components/TransactionsFileInput";
 import CashflowUserInfo from "../components/CashflowUserInfo";
 import CashflowUtilities from "../components/CashflowUtilities";
 import { Transaction } from "../backend/model";
+import HStack from "../components/HStack";
 
 const Cashflow = ({setUser}) => {
 
@@ -57,9 +58,6 @@ const Cashflow = ({setUser}) => {
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-[#272727] text-white w-screen font-rhaz text-sm'>
             <VStack className=' overflow-y-auto h-full bg-[#222222] w-full max-w-lg border-r-[#393B3D] border-r-[1px]'>
-                <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
-                <CashflowUserInfo userId={userId} setUser={setUser}/>
-                <TransactionsFileInput setAllTransactions={setAllTransactions}/>
                 <TransactionFilter 
                     allTransactions={allTransactions}
                     setSievedTransactions={setSievedTransactions}
@@ -71,7 +69,15 @@ const Cashflow = ({setUser}) => {
                     categories={categories} 
                 />
             </VStack>
-            <TransactionsPieChart transactions={sievedTransactions} selectedCategoryId={selectedCategoryId} setSelectedCategoryId={setSelectedCategoryId} categories={categories}/>
+            <VStack className='w-full h-full'>
+                <HStack>
+                    <TransactionsFileInput setAllTransactions={setAllTransactions}/>
+                    <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
+                    <CashflowUserInfo userId={userId} setUser={setUser}/>
+                </HStack>
+                <TransactionsPieChart transactions={sievedTransactions} selectedCategoryId={selectedCategoryId} setSelectedCategoryId={setSelectedCategoryId} categories={categories}/>
+            </VStack>
+            
 
         </div>
     )
