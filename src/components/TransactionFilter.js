@@ -4,6 +4,8 @@ import { FaArrowUp, FaFilter, FaSearch } from "react-icons/fa";
 import {FiSearch} from "react-icons/fi"
 import { useEffect, useState } from "react";
 import BounceButton from "./BounceButton";
+import { Tags } from "./Tags";
+import { updateTransactionTags } from "../backend/db";
 
 
 const FilterOrderByComponent = ({ orderBy, setOrderBy, orderAscending, setOrderAscending }) => {
@@ -132,10 +134,10 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
             .sort(sortTransactions)
         )
     }
-    useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag, includesString])
+    useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag, includesString, allTransactions])
 
     return (
-        <HStack className=' p-4 w-full h-auto gap-2 '>
+        <VStack className=' p-4 w-full h-auto gap-2 '>
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
                 setAmountUpper={setAmountUpper}
@@ -143,7 +145,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
                 setTag={setTag}
             />
             
-        </HStack >
+        </VStack>
         
     
     )

@@ -41,9 +41,9 @@ const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
         )
     }
     return (
-        <VStack className='gap-2 w-full'>
+        <HStack className='gap-2 w-1/2 items-center  flex-wrap'>
             {Object.entries(tagColorMap).map((a) => (<LegendRow tag={a[0]} color={a[1]}/>))}
-        </VStack>
+        </HStack>
     )
 }
 
@@ -110,9 +110,9 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
     }
 
     return (
-        <VStack className='w-full h-full'>
-            <HStack className='w-full h-full'>
-                <div className="relative w-80 h-80 max-h-80 max-w-80">
+        <VStack className='w-full h-full items-center justify-center'>
+            <HStack className='w-full justify-center '>
+                <div className="relative h-[400px] w-[400px] ">
                     <div className=" w-full h-full absolute">
                         <Pie
                             key={'234'}
@@ -131,7 +131,8 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
                             labelStyle={{}}
                         />
                     </div>
-                    <PieChartValue data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
+                    <PieChartValue 
+                        data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
                 </div>
             </HStack>
             <PieChartLegend tagColorMap={tagColorMap} setTagColorMap={setTagColorMap}/>

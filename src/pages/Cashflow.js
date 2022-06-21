@@ -11,6 +11,7 @@ import CashflowUserInfo from "../components/CashflowUserInfo";
 import CashflowUtilities from "../components/CashflowUtilities";
 import { Transaction } from "../backend/model";
 import HStack from "../components/HStack";
+import { TransactionModifier } from "../components/TransactionModifier";
 
 const Cashflow = ({setUser}) => {
 
@@ -26,7 +27,6 @@ const Cashflow = ({setUser}) => {
             (querySnapshot) => {
                 const updatedTransactions = querySnapshot.docs.map(d => Transaction.createFromData(d.data())  )
                 setAllTransactions(updatedTransactions)
-                setSievedTransactions(updatedTransactions)
             },
             (error) => { console.log(error, "Error dude. (RS01)") }
         )
@@ -50,18 +50,20 @@ const Cashflow = ({setUser}) => {
             unsubscribeCategories()
             unsubscribeTags()
         }
-    }, [setAllTransactions, setSievedTransactions])
+    }, [setAllTransactions])
 
-    useEffect(() => {
-        setSievedTransactions(allTransactions)
-    }, [allTransactions])
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-[#272727] text-white w-screen font-rhaz text-sm'>
-            <VStack className=' overflow-y-auto h-full bg-[#222222] w-full max-w-lg border-r-[#393B3D] border-r-[1px]'>
+            <VStack className='overflow-y-auto h-full bg-[#222222] min-w-[400px] w-full max-w-2xl  border-r-[#393B3D] border-r-[1px]'>
                 <TransactionFilter 
+                    sievedTransactions={sievedTransactions}
                     allTransactions={allTransactions}
                     setSievedTransactions={setSievedTransactions}
                 />
+                <div className="px-4 text-xs text-slate-600">
+                    Found {sievedTransactions.length} transactions.
+                </div>
+                <TransactionModifier transactions={sievedTransactions} />
                 <TransactionList 
                     transactions={sievedTransactions} 
                     selectedCategoryId={selectedCategoryId} 
