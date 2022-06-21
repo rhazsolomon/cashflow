@@ -13,7 +13,8 @@ export async function processBankFile(file) {
         return Transaction.create(
             Math.abs(Number.parseFloat(th['Amount'])),
             [],
-            new Date(year, month, day)
+            new Date(year, month-1, day),
+            th
         )
     }
     const isValidTransactionHint = (th) => {

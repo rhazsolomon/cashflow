@@ -124,12 +124,12 @@ const WelcomeForm = ({ setUser }) => {
 
 
 const CashflowLogin = () => {
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState('user_5a5082f0-e649-4170-b1b6-120dc58f6276')
 
     return (
         <div>
             {!user && <WelcomeForm setUser={setUser} />}
-            {user && <Cashflow />}
+            {user && <Cashflow setUser={setUser}/>}
         </div>
     )
 

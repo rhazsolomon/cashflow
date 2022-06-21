@@ -110,7 +110,7 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
     }
 
     return (
-        <HStack className='w-auto h-full'>
+        <VStack className='w-full h-full'>
             <HStack className='w-full h-full'>
                 <div className="relative w-80 h-80 max-h-80 max-w-80">
                     <div className=" w-full h-full absolute">
@@ -135,7 +135,7 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
                 </div>
             </HStack>
             <PieChartLegend tagColorMap={tagColorMap} setTagColorMap={setTagColorMap}/>
-        </HStack>
+        </VStack>
         
         
     )

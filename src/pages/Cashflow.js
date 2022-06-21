@@ -11,7 +11,7 @@ import CashflowUserInfo from "../components/CashflowUserInfo";
 import CashflowUtilities from "../components/CashflowUtilities";
 import { Transaction } from "../backend/model";
 
-const Cashflow = () => {
+const Cashflow = ({setUser}) => {
 
     const [allTransactions, setAllTransactions] = useState([])
     const [sievedTransactions, setSievedTransactions] = useState([])
@@ -56,9 +56,9 @@ const Cashflow = () => {
     }, [allTransactions])
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-[#272727] text-white w-screen font-rhaz text-sm'>
-            <VStack className='max-w-[500px] overflow-y-auto h-full bg-[#222222] w-full'>
+            <VStack className=' overflow-y-auto h-full bg-[#222222] w-full max-w-lg border-r-[#393B3D] border-r-[1px]'>
                 <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
-                <CashflowUserInfo userId={userId}/>
+                <CashflowUserInfo userId={userId} setUser={setUser}/>
                 <TransactionsFileInput setAllTransactions={setAllTransactions}/>
                 <TransactionFilter 
                     allTransactions={allTransactions}

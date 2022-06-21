@@ -1,7 +1,7 @@
 import HStack from "./HStack"
 import VStack from "./VStack"
 
-import { FaDollarSign, FaEnvira, FaTag, FaPlus, FaTrash } from "react-icons/fa";
+import { FaDollarSign, FaEnvira, FaTag, FaPlus, FaTrash, FaLock } from "react-icons/fa";
 import { deleteTransaction, updateTransactionTags } from "../backend/db";
 import BounceButton from "./BounceButton";
 import { useState } from "react";
@@ -61,7 +61,7 @@ function getColor(categories, categoryId) {
 const TransactionElementAmount = ({ amount }) => {
 
     return (
-        <HStack className='gap-1 align-middle justify-end font-bold'>
+        <HStack className='gap-1 align-middle justify-end font-bold bg-red-900 py-1 px-3 rounded-full bg-opacity-30 border-[1px] border-red-900 border-opacity-50'>
             <FaDollarSign className="text-sm" />
             {Number.parseFloat(amount).toFixed(2)}
         </HStack>
@@ -113,7 +113,7 @@ const TransactionTags = ({transaction}) => {
                 <HStack className='gap-2 w-full flex-wrap text-xs'>
                     
                         {transaction.tags.map(t => (
-                            <HStack className=" bg-[#7A7C7F] py-1 px-3 rounded-full gap-2">
+                            <HStack className=" bg-[#7A7C7F] py-1 px-3 rounded-full gap-2 border-slate-500 shadow-sm border-[2px]">
                                 <FaTag style={{ fill: 'border-gray-500' }} />
                                 {t}
                             </HStack>
@@ -131,25 +131,39 @@ const TransactionTags = ({transaction}) => {
         </div>
     )
 }
-const TransactionElement = ({ transaction, categories }) => {
-    console.log(Object.keys(transaction.date))
-    return (
-        <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto w-full'>
 
-            <VStack className='max-w-[600px] h-auto  '>
-                <HStack className="w-full h-auto">
-                    <TransactionElementAmount amount={transaction.amount} />
-                </HStack>
-                {/* <div className="flex-wrap flex py-2 h-auto gap-2">
-                    {transaction.tags?.map(t => (<TransactionElementTag tag_id={t} key={t.id + transaction.id} />))}
-                    <TransactionElementTag />
-                </div> */}
-                <HStack className='gap-3'>
+const TransactionElementMeta = ({meta}) => {
+    return (
+        <VStack className="p-2 gap-3 border-[1px] border-slate-700 rounded bg-[#2D2D2D] text-gray-500">
+            <FaLock />
+            <div>
+                {Object.entries(meta).sort().map((a,b) => (
+                    <HStack className='gap-2'>
+                        <div className="w-full font-bold">{a[0]}</div>
+                        <div className="text-right w-full whitespace-nowrap">{a[1]}</div>
+                    </HStack>
+                ))}
+            </div>
+        </VStack>
+    )
+}
+const TransactionElement = ({ transaction }) => {
+    return (
+        <HStack className='p-4 gap-3 hover:bg-[#272727] h-auto w-full border-b-[1px] border-b-slate-700'>
+            
+            <VStack className='w-full h-auto gap-2 '>
+                <HStack className="w-full h-auto gap-3">
+                <TransactionElementAmount amount={transaction.amount} />        
+                    <div className="w-full text-right">
+                        {transaction.date.toDateString()}
+                    </div>
                     <BounceButton onClick={() => deleteTransaction(transaction.id)}>
                         <FaTrash />
                     </BounceButton>
-                    {typeof(transaction.date)}
                 </HStack>
+                <TransactionElementMeta meta={transaction.meta}/>
+                
+
                 <TransactionTags transaction={transaction}/>
             </VStack>
         </HStack>

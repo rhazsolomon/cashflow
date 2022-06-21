@@ -125,6 +125,7 @@ export async function addTransaction(transaction) {
         date: transaction.date,
         created: transaction.created,
         tags: transaction.tags,
+        meta: transaction.meta
     })
     return transaction
 }
