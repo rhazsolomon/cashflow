@@ -22,11 +22,11 @@ const FilterOrderByComponent = ({ orderBy, setOrderBy, orderAscending, setOrderA
         }
     }
     return (
-        <HStack className='rounded-full bg-slate-400 border-[1px] border-slate-300  w-min gap-2 hover:opacity-80 hover:bg-slate-600 text-slate-100' >
+        <HStack className='rounded-full bgbackground-2 border-[1px] borderbackground-2  w-min gap-2 hover:opacity-80 hover:bgbackground-2 textbackground-2' >
             <div
                 onClick={() => setOrderAscending(!orderAscending)}
                 style={arrowStyle}
-                className='bg-slate-500 p-2 rounded-full hover:bg-slate-600 shadow-slate-500'
+                className='bgbackground-2 p-2 rounded-full hover:bgbackground-2 shadowbackground-2'
             >
                 <FaArrowUp />
             </div>
@@ -75,7 +75,7 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag, setInclude
 
     return (
         <HStack 
-            className="px-3 gap-2 py-1 border-[1px] text-[#C6C7C7] font-thin rounded-md border-[#393B3D] w-full"
+            className="px-3 gap-2 py-1 border-[1px] text-[#C6C7C7] font-thin rounded-md border-background-3 w-full"
         >
             
             <FiSearch className="text-[#5F6062]"/>

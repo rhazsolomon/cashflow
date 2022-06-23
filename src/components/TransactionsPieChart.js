@@ -50,7 +50,7 @@ const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
 const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCategoryId }) => {
     if (transactions.length == 0) {
         return (
-            <div className="text-slate-500 text-center w-full">
+            <div className="textbackground-2 text-center w-full">
                 Nothing here
             </div>
         )

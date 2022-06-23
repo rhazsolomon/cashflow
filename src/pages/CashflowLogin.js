@@ -15,7 +15,7 @@ import BounceButton from "../components/BounceButton"
 
 const EmailInput = ({ setValue }) => {
     return (
-        <HStack className="px-6 gap-3 py-2 w-full bg-slate-400 rounded-full bg-rhaz-minor-grey text-rhaz-major-grey">
+        <HStack className="px-6 gap-3 py-2 w-full bgbackground-2 rounded-full bg-rhaz-minor-grey text-rhaz-major-grey">
             <FiUser />
             <input
                 className="bg-transparent text-black"
@@ -30,7 +30,7 @@ const EmailInput = ({ setValue }) => {
 const PasswordInput = ({ setValue }) => {
     return (
         <VStack className={'gap-3'}>
-            <HStack className="px-6 py-2 w-full bg-slate-400 rounded-full bg-rhaz-minor-grey text-rhaz-major-grey gap-3" >
+            <HStack className="px-6 py-2 w-full bgbackground-2 rounded-full bg-rhaz-minor-grey text-rhaz-major-grey gap-3" >
                 <FiLock />
                 <input
                     className="bg-transparent focus:border-debug text-black"
@@ -77,7 +77,7 @@ const RegisterForm = ({ setUser }) => {
     return (
         <VStack className='h-full items-center justify-center'>
             <BounceButton
-                className='h-auto p-6 bg-slate-100 rounded-2xl border-[1px]'
+                className='h-auto p-6 bgbackground-2 rounded-2xl border-[1px]'
                 onClick={() => {
                     setUser('user_7544046c-49b8-492c-94d4-f9c977e73b95')
                 }}

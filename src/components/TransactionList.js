@@ -20,40 +20,44 @@ const TransactionElementAmount = ({ amount }) => {
 const TransactionElementMeta = ({ meta }) => {
     const [hidden, setHidden] = useState(true)
     return (
-        
-            <VStack className="p-2 gap-3 text-left  rounded bg-[#2D2D2D] text-gray-500">
-                <HStack className='gap-2'>
-                    <FaLock />
-                    <div className="whitespace-nowrap">
-                        {meta["Other Party"]}
-                    </div>
-                    <HStack className='w-full justify-end'>
+
+        <VStack className="p-2 gap-3 text-left  rounded bg-background-1 textbackground-2">
+            <HStack className='gap-2'>
+                <FaLock />
+                <div className="whitespace-nowrap">
+                    {meta["Other Party"]}
+                </div>
+                <HStack className='w-full justify-end'>
                     <BounceButton onClick={() => setHidden(!hidden)}>
                         <FiChevronRight />
-                        </BounceButton>
-                    </HStack>
-                        
-                    
+                    </BounceButton>
                 </HStack>
 
-                {!hidden && (
-                    <div>
-                        {Object.entries(meta).sort().map((a, b) => (
-                            <HStack className='gap-2'>
-                                <div className="w-full font-bold">{a[0]}</div>
-                                <div className="text-right w-full whitespace-nowrap">{a[1]}</div>
-                            </HStack>
-                        ))}
-                    </div>
-                )}
-            </VStack>
-        
+
+            </HStack>
+
+            {!hidden && (
+                <div>
+                    {Object.entries(meta).sort().map((a, b) => (
+                        <HStack className='gap-2'>
+                            <div className="w-full font-bold">{a[0]}</div>
+                            <div className="text-right w-full whitespace-nowrap">{a[1]}</div>
+                        </HStack>
+                    ))}
+                </div>
+            )}
+        </VStack>
+
 
     )
 }
-const TransactionElement = ({ transaction }) => {
+const TransactionElement = ({ transaction, selected }) => {
+    selected = transaction.amount == 74
     return (
-        <VStack className='p-4 w-full h-auto gap-3 hover:bg-slate-800'>
+
+        <VStack 
+            className={`p-4 w-full h-auto gap-3 hover:bg-background-5 border-l-[6px] ${selected ? 'border-l-primary': 'border-l-background-3'}`}
+        >
             <HStack className="w-full h-auto gap-3">
 
                 <div className="whitespace-nowrap">
@@ -75,6 +79,9 @@ const TransactionElement = ({ transaction }) => {
                 onEnter={(tags) => updateTransactionTags(transaction, tags)}
             />
         </VStack>
+
+
+
     )
 }
 

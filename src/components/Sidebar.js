@@ -17,7 +17,7 @@ const Sidebar = () => {
             <div>Filetio</div>
             <img src='https://picsum.photos/150' className="w-20 self-center"></img>
             <div className="font-bold">Piyush</div>
-            <div className="text-gray-500">Pro Plan</div>
+            <div className="textbackground-2">Pro Plan</div>
             <div className="self-start">Menu</div>
             <SidebarMenuItem 
                 src='https://picsum.photos/150'

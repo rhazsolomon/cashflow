@@ -4,7 +4,21 @@ import { FaDollarSign, FaEnvira, FaTag, FaPlus, FaTrash, FaLock } from "react-ic
 import BounceButton from "./BounceButton";
 import { useEffect, useState } from "react";
 
+const Tag = ({tag}) => {
+    const tagColor = 'tag-2'
+    return (
+            <HStack 
+                className={`bg-${tagColor} py-1 px-3 rounded-full gap-2 border-${tagColor}-highlight border-[1px]`} 
+                key={tag}
+            >
+                <FaTag 
+                    className={`text-${tagColor}-highlight`}
+                />
+                {tag}
+            </HStack>
 
+    )
+}
 export const Tags = ({tags, onEnter}) => {
 
     let initialText = ""
@@ -35,7 +49,7 @@ export const Tags = ({tags, onEnter}) => {
                 <input
                 autoFocus
                 type={"text"}
-                className={"px-3 py-1 border-[#393B3D] bg-[#222222] border-[1px] rounded-md w-full"}
+                className={"px-3 py-1 border-background-3 bg-background-4 border-[1px] rounded-md w-full"}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onKeyDown={onKeyDown}
@@ -44,18 +58,14 @@ export const Tags = ({tags, onEnter}) => {
                 <BounceButton>
                 <HStack className='gap-2 w-full flex-wrap text-xs'>
                     
-                        {tags.map(t => (
-                            <HStack className=" bg-[#7A7C7F] py-1 px-3 rounded-full gap-2 border-slate-500 shadow-sm border-[2px]" key={t}>
-                                <FaTag style={{ fill: 'border-gray-500' }} />
-                                {t}
-                            </HStack>
-                        ))}
+                        {tags.map(t => (<Tag tag={t} key={t}/>))}
                         {tags.length == 0 && (
                             <HStack 
-                                // className="border-[#7A7C7F] text-[#7A7C7F] border-[1px] py-1 px-4 rounded-full gap-2"
-                                className="text-[#7A7C7F] rounded-full gap-2"
+                                className="text-tag-background rounded-full gap-2"
                             >
-                                <FaTag style={{ fill: 'border-gray-500' }} />
+                                <FaTag 
+                                    className="text-tag-background"
+                                />
                                 Add Tag
                             </HStack>
                         )}

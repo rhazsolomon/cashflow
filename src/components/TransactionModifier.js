@@ -18,11 +18,11 @@ export const TransactionModifier = ({transactions}) => {
         }
         return (
             <VStack 
-                className='w-auto m-4 bg-gray-900 border-[1px] border-[#393A3E] rounded p-4 gap-4'
+                className='w-auto m-4 bgbackground-2 border-[1px] border-[#393A3E] rounded p-4 gap-4'
             >
                 <Tags tags={tags} onEnter={onEnter} />
                 <BounceButton 
-                    className='bg-slate-400 px-3 w-min whitespace-nowrap rounded-2xl py-1'
+                    className='bgbackground-2 px-3 w-min whitespace-nowrap rounded-2xl py-1'
                     onClick={applyToAllTransactions}
                 >
                     Apply to all filtered
