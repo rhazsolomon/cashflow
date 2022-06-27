@@ -1,5 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 
+export class User {
+    constructor(id, name, uid, isTestUser = true) {
+        this.id = id
+        this.name = name
+        this.uid = uid
+        this.isTestUser = true
+        if (isTestUser === null) {
+            this.isTestUser = true
+        }
+    }
+
+    static createFromData(data) {
+        return new User(data.id, data.name, data.uid, data?.isTestUser)
+    }
+}
 export class Transaction {
     constructor(id, amount, tags, created, date, meta) {
         this.id = id

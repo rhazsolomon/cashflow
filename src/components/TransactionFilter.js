@@ -75,12 +75,12 @@ const FilterFreeTextInput = ({setAmountLower, setAmountUpper, setTag, setInclude
 
     return (
         <HStack 
-            className="px-3 gap-2 py-1 border-[1px] text-[#C6C7C7] font-thin rounded-md border-background-3 w-full"
+            className="px-3 gap-2 py-1 border-[1px] text-foreground-2  font-thin rounded-md border-background-3 w-full"
         >
             
-            <FiSearch className="text-[#5F6062]"/>
+            <FiSearch />
             <input 
-                className="   placeholder:text-[#5F6062]  bg-transparent w-full "
+                className="placeholder:text-foreground-2 bg-transparent w-full "
                 type={"text"} 
                 placeholder={"Search Transactions"}
                 value={freeText} onChange={(e) => {setFreeText(e.target.value)}}
@@ -103,10 +103,10 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     
 
     function filterTransactions(a) {
-        if (amountLower && a.amount < amountLower) {
+        if (amountLower != null && a.amount < amountLower) {
             return false
         }
-        if (amountUpper && a.amount > amountUpper) {
+        if (amountUpper != null && a.amount > amountUpper) {
             return false
         }
         if (tag && !a.tags.includes(tag)){
@@ -137,7 +137,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag, includesString, allTransactions])
 
     return (
-        <VStack className=' p-4 w-full h-auto gap-2 '>
+        <VStack className=' px-4 py-3 w-full h-auto gap-2 '>
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
                 setAmountUpper={setAmountUpper}

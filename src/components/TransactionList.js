@@ -51,12 +51,12 @@ const TransactionElementMeta = ({ meta }) => {
 
     )
 }
-const TransactionElement = ({ transaction, selected }) => {
-    selected = transaction.amount == 74
+const TransactionElement = ({ transaction, selected, onClick }) => {
     return (
 
         <VStack 
             className={`p-4 w-full h-auto gap-3 hover:bg-background-5 border-l-[6px] ${selected ? 'border-l-primary': 'border-l-background-3'}`}
+            onClick={onClick}
         >
             <HStack className="w-full h-auto gap-3">
 
@@ -86,7 +86,10 @@ const TransactionElement = ({ transaction, selected }) => {
 }
 
 
-const TransactionList = ({ transactions, categories }) => {
+const TransactionList = ({ transactions }) => {
+    
+    const [selectedTransaction, setSelectedTransaction] = useState(null)
+
     if (transactions.length == 0) {
         return (
             <div className="h-full w-full p-4 text-center text-[#5F6062]">
@@ -95,12 +98,9 @@ const TransactionList = ({ transactions, categories }) => {
         )
     }
     return (
-        <VStack className='gap-4 h-full overflow-y-auto scrollbar-hide items-start justify-start'>
-            <div className="p-4">
-                {transactions.length} transactions found.
-            </div>
-            {transactions.map(t => (
-                <TransactionElement transaction={t} key={t.id} categories={categories} />
+        <VStack className='h-full overflow-y-auto scrollbar-hide items-start justify-start'>
+            {transactions.map((t, i) => (
+                <TransactionElement transaction={t} key={t.id} selected={selectedTransaction == i} onClick={() => {console.log("blfd");setSelectedTransaction(i)}}/>
             ))}
         </VStack>
     )

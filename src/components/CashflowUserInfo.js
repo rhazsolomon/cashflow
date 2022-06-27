@@ -3,14 +3,21 @@ import BounceButton from "./BounceButton";
 import HStack from "./HStack";
 
 
-const CashflowUserInfo = ({userId, setUser}) => {
+const CashflowUserInfo = ({user, setUser}) => {
+    console.log(user)
     return (
-        <HStack className=" h-auto gap-4 w-auto text-white p-3 border-[1px] rounded-lg m-3 border-green-700">
-            <FaUser />
-            <BounceButton onClick={() => setUser(null)}>
-                {userId}
-            </BounceButton>
-            
+        <HStack 
+            className="w-min whitespace-nowrap gap-2 p-3"
+        >
+            <FaUser /> 
+            <BounceButton onClick={() => setUser(null)} className='flex gap-2'>
+                {user.name}
+                {user.isTestUser && (
+                    <div className="rounded bg-primary px-2">
+                        Test User
+                    </div>
+                )}
+            </BounceButton>        
         </HStack>
     )
 }

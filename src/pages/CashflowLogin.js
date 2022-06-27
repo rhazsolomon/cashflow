@@ -77,9 +77,11 @@ const RegisterForm = ({ setUser }) => {
     return (
         <VStack className='h-full items-center justify-center'>
             <BounceButton
-                className='h-auto p-6 bgbackground-2 rounded-2xl border-[1px]'
-                onClick={() => {
-                    setUser('user_7544046c-49b8-492c-94d4-f9c977e73b95')
+                className='h-auto p-6 bg-background-2 rounded-2xl border-[1px]'
+                onClick={async () => {
+                    console.log("Hello world")
+                    let user = await signIn("test-user@test.com", "123456")
+                    setUser(user.id)
                 }}
             >
                 Use fake account
@@ -124,7 +126,7 @@ const WelcomeForm = ({ setUser }) => {
 
 
 const CashflowLogin = () => {
-    const [user, setUser] = useState('user_5a5082f0-e649-4170-b1b6-120dc58f6276')
+    const [user, setUser] = useState(null)
 
     return (
         <div>

@@ -16,8 +16,10 @@ import {
     updateDoc
 } from 'firebase/firestore'
 import { v4 as uuidv4 } from 'uuid';
+import { User } from './model';
 
-export let userId = 'user_5a5082f0-e649-4170-b1b6-120dc58f6276'
+export let currentUser = null
+
 
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyB3AQKEctPrt6NWteU-EZlESvbpgY15JTA",
@@ -87,6 +89,7 @@ export async function addTag(userId, label) {
     return newTagId
 }
 
+
 export async function addUser(name, email) {
     const userCol = collection(db, 'user')
 
@@ -111,14 +114,14 @@ export async function addUser(name, email) {
 
 export async function updateTransactionTags(transaction, tags) {
     const userCol = collection(db, 'user')
-    const userDoc = doc(userCol, userId)
+    const userDoc = doc(userCol, currentUser.id)
     await updateDoc(doc(userDoc, 'transaction', transaction.id), {
         tags: tags
     })
 }
 export async function addTransaction(transaction) {
     const userCol = collection(db, 'user')
-    const userDoc = doc(userCol, userId)
+    const userDoc = doc(userCol, currentUser.id)
     await setDoc(doc(userDoc, 'transaction', transaction.id), {
         id: transaction.id,
         amount: transaction.amount,
@@ -155,7 +158,7 @@ export async function createNewUserWithDefaults(name, email) {
 
 export async function deleteTransaction(transactionId) {
     const userCol = collection(db, 'user')
-    const userDoc = doc(userCol, userId)
+    const userDoc = doc(userCol, currentUser.id)
     await deleteDoc(doc(userDoc, "transaction", transactionId));
 }
 
@@ -169,7 +172,7 @@ export async function deleteTransactions(transactionIds) {
 export function streamTransactions(snapshot, error) {
     // This helped a lot
     //  https://blog.logrocket.com/how-to-use-react-hooks-firebase-firestore/
-    const transactionCol = collection(db, 'user', userId, 'transaction')
+    const transactionCol = collection(db, 'user', currentUser.id, 'transaction')
     const itemsQuery = query(transactionCol, orderBy('date'))
     return onSnapshot(itemsQuery, snapshot, error)
 }
@@ -177,7 +180,7 @@ export function streamTransactions(snapshot, error) {
 export function streamCategories(snapshot, error) {
     // This helped a lot
     //  https://blog.logrocket.com/how-to-use-react-hooks-firebase-firestore/
-    const categoryCol = collection(db, 'user', userId, 'category')
+    const categoryCol = collection(db, 'user', currentUser.id, 'category')
     const itemsQuery = query(categoryCol)
     return onSnapshot(itemsQuery, snapshot, error)
 
@@ -186,23 +189,25 @@ export function streamCategories(snapshot, error) {
 export function streamTags(snapshot, error) {
     // This helped a lot
     //  https://blog.logrocket.com/how-to-use-react-hooks-firebase-firestore/
-    const tagCollection = collection(db, 'user', userId, 'tag')
+    const tagCollection = collection(db, 'user', currentUser.id, 'tag')
     const itemsQuery = query(tagCollection)
     return onSnapshot(itemsQuery, snapshot, error)
 }
 
 export async function getUserWithUID(uid) {
+    console.log("A")
+    console.log(currentUser)
     const userRef = collection(db, 'user')
     const q = query(userRef, where("uid", "==", uid), limit(1))
     const qSnapshot = await getDocs(q)
     let res = null
     qSnapshot.forEach((d) => {
-        res = d.data()
+        res = User.createFromData(d.data())
     })
-    return res.id
+    return res
 }
 export async function signIn(email, password) {
     const userCred = await signInWithEmailAndPassword(auth, email, password)
-    userId = await getUserWithUID(userCred.user.uid)
-    return userCred.user
+    currentUser = await getUserWithUID(userCred.user.uid)
+    return currentUser
 }

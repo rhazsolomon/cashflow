@@ -11,7 +11,7 @@ export async function processBankFile(file) {
     function transactionHintToTransaction(th) {
         const [day, month, year] = th['Date'].split('/')
         return Transaction.create(
-            Math.abs(Number.parseFloat(th['Amount'])),
+            Number.parseFloat(th['Amount']),
             [],
             new Date(year, month-1, day),
             th

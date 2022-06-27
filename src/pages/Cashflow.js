@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import VStack from "../components/VStack";
 
 import TransactionsPieChart from "../components/TransactionsPieChart";
-import { streamTransactions, streamCategories, streamTags, userId } from "../backend/db";
+import { streamTransactions, streamCategories, streamTags, currentUser } from "../backend/db";
 
 import TransactionList from "../components/TransactionList";
 import TransactionFilter from "../components/TransactionFilter";
@@ -34,7 +34,6 @@ const Cashflow = ({setUser}) => {
             (querySnapshot) => {
                 const updatedCategories = querySnapshot.docs.map(d => d.data())
                 setCategories(updatedCategories)
-                console.log(updatedCategories)
             },
             (error) => { console.log(error, "Error dude. (RS02)") }
         )
@@ -60,7 +59,7 @@ const Cashflow = ({setUser}) => {
                     allTransactions={allTransactions}
                     setSievedTransactions={setSievedTransactions}
                 />
-                <div className="px-4 text-xs textbackground-2">
+                <div className="px-4 text-xs text-foreground-2">
                     Found {sievedTransactions.length} transactions.
                 </div>
                 <TransactionModifier transactions={sievedTransactions} />
@@ -71,13 +70,20 @@ const Cashflow = ({setUser}) => {
                     categories={categories} 
                 />
             </VStack>
-            <VStack className='w-full h-full'>
-                <HStack>
+            <VStack className='w-full h-full bg-background-4'>
+                <HStack className='p-2'>
                     <TransactionsFileInput setAllTransactions={setAllTransactions}/>
-                    <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
-                    <CashflowUserInfo userId={userId} setUser={setUser}/>
+                    <CashflowUserInfo user={currentUser} setUser={setUser}/>
                 </HStack>
-                <TransactionsPieChart transactions={sievedTransactions} selectedCategoryId={selectedCategoryId} setSelectedCategoryId={setSelectedCategoryId} categories={categories}/>
+                { currentUser.isTestUser && (
+                        <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
+                    )}
+                <TransactionsPieChart 
+                    transactions={sievedTransactions} 
+                    selectedCategoryId={selectedCategoryId} 
+                    setSelectedCategoryId={setSelectedCategoryId} 
+                    categories={categories}
+                />
             </VStack>
             
 

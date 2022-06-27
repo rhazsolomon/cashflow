@@ -9,9 +9,13 @@ const TransactionsFileInput = ({ setAllTransactions }) => {
         setAllTransactions(allNewTransactions)
     }
     return (
-        <HStack className={"border-[1px] h-auto  w-auto  gap-3 p-3 m-3 rounded-lg border-red-800"}>
+        <HStack className={"gap-2 w-min  mr-auto"}>
             <FaFile />
-            <input  type={'file'} onChange={handleFileInput} />
+            <input  
+                type={'file'} 
+                onChange={handleFileInput} 
+                
+            />
         </HStack>
         
     )

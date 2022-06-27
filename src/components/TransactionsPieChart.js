@@ -105,7 +105,6 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
             transition: selectedCategoryId === data[i].name ? friendlyTransition : assertiveTransition,
             stroke: tagColorMap[data[i].name],
             opacity: opacity,
-            
         }
     }
 

@@ -5,10 +5,12 @@ import BounceButton from "./BounceButton";
 import { useEffect, useState } from "react";
 
 const Tag = ({tag}) => {
-    const tagColor = 'tag-2'
+    const tagColor = 'tag-1'
+    const colourClasses = `bg-${tagColor} border-${tagColor}-highlight`
+    
     return (
             <HStack 
-                className={`bg-${tagColor} py-1 px-3 rounded-full gap-2 border-${tagColor}-highlight border-[1px]`} 
+                className={`${colourClasses} py-1 px-3 rounded-full gap-2  border-[1px]`} 
                 key={tag}
             >
                 <FaTag 
@@ -44,7 +46,7 @@ export const Tags = ({tags, onEnter}) => {
         }
     }
     return (
-        <div className="w-full" onClick={() => setEditing(true)}>
+        <div className="w-full">
             {editing ? (
                 <input
                 autoFocus
@@ -55,22 +57,24 @@ export const Tags = ({tags, onEnter}) => {
                 onKeyDown={onKeyDown}
                 />
             ) : (
-                <BounceButton>
-                <HStack className='gap-2 w-full flex-wrap text-xs'>
+                <BounceButton
+                    onClick={() => setEditing(true)}
+                >
+                    <HStack className='gap-2 w-full flex-wrap text-xs'>
+                        
+                            {tags.map(t => (<Tag tag={t} key={t}/>))}
+                            {tags.length == 0 && (
+                                <HStack 
+                                    className="text-foreground-1 rounded-full gap-2"
+                                >
+                                    <FaTag 
+                                        className="text-foreground-1"
+                                    />
+                                    Add Tag
+                                </HStack>
+                            )}
                     
-                        {tags.map(t => (<Tag tag={t} key={t}/>))}
-                        {tags.length == 0 && (
-                            <HStack 
-                                className="text-tag-background rounded-full gap-2"
-                            >
-                                <FaTag 
-                                    className="text-tag-background"
-                                />
-                                Add Tag
-                            </HStack>
-                        )}
-                  
-                </HStack>
+                    </HStack>
                 </BounceButton>
                 
             )}
