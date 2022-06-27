@@ -137,7 +137,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag, includesString, allTransactions])
 
     return (
-        <VStack className=' px-4 py-3 w-full h-auto gap-2 '>
+        <VStack className=' px-4 w-full h-auto gap-2 '>
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
                 setAmountUpper={setAmountUpper}

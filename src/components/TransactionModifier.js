@@ -18,7 +18,7 @@ export const TransactionModifier = ({transactions}) => {
         }
         return (
             <VStack 
-                className='w-auto m-4 bgbackground-2 border-[1px] border-[#393A3E] rounded p-4 gap-4'
+                className='w-auto mx-4 bgbackground-2 border-[1px] border-[#393A3E] rounded p-4 gap-4'
             >
                 <Tags tags={tags} onEnter={onEnter} />
                 <BounceButton 

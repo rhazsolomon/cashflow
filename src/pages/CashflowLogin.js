@@ -48,7 +48,7 @@ const SignInForm = ({ setUser }) => {
     const [password, setPassword] = useState(null)
     const signInAndSet = async () => {
         const user = await signIn(email, password)
-        setUser(user)
+        setUser(user.id)
     }
     return (
 

@@ -54,15 +54,25 @@ const Cashflow = ({setUser}) => {
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-background-1 text-foreground-1 w-screen font-rhaz text-sm'>
             <VStack className='overflow-y-auto h-full bg-background-2 min-w-[400px] w-full max-w-2xl  border-r-background-3 border-r-[1px]'>
-                <TransactionFilter 
-                    sievedTransactions={sievedTransactions}
-                    allTransactions={allTransactions}
-                    setSievedTransactions={setSievedTransactions}
-                />
-                <div className="px-4 text-xs text-foreground-2">
-                    Found {sievedTransactions.length} transactions.
-                </div>
-                <TransactionModifier transactions={sievedTransactions} />
+                <VStack className="mt-4">
+                    <TransactionFilter 
+                        sievedTransactions={sievedTransactions}
+                        allTransactions={allTransactions}
+                        setSievedTransactions={setSievedTransactions}
+                    />
+                    <svg height="20px">
+                        <line x1="50%" y1="0%" x2="50%" y2="100%" stroke="#393A3E"/>
+                    </svg>
+                    <TransactionModifier transactions={sievedTransactions} />
+                    <div className="px-4 mt-2 text-xs text-foreground-2">
+                        Found {sievedTransactions.length} transactions.
+                    </div>
+
+                </VStack>
+                
+                
+                    
+                
                 <TransactionList 
                     transactions={sievedTransactions} 
                     selectedCategoryId={selectedCategoryId} 
