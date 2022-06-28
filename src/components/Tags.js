@@ -6,11 +6,19 @@ import { useEffect, useState } from "react";
 
 const Tag = ({tag}) => {
     const tagColor = 'tag-1'
-    const colourClasses = `bg-${tagColor} border-${tagColor}-highlight`
     
+    let colors = "bg-background-3 text-foreground-1`"
+    if (tag === "holly") {
+        colors = "bg-gradient-to-r from-[#FD9602] to-[#FF6517] text-black shadow-black shadow-md"
+    }
+    if (tag === "mel") {
+        colors = "bg-gradient-to-r from-[#00E2DA] to-[#02B197] text-black shadow-black shadow-md"
+    }
+    
+
     return (
             <HStack 
-                className={`${colourClasses} py-1 px-3 rounded-full gap-2  border-[1px]`} 
+                className={`py-1 px-3 rounded-full gap-2 ${colors}`} 
                 key={tag}
             >
                 <FaTag 

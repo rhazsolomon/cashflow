@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import VStack from "../components/VStack";
 
-import TransactionsPieChart from "../components/TransactionsPieChart";
+import TransactionsPieChart, { LuminousPieChart } from "../components/TransactionsPieChart";
 import { streamTransactions, streamCategories, streamTags, currentUser } from "../backend/db";
 
 import TransactionList from "../components/TransactionList";
@@ -67,7 +67,6 @@ const Cashflow = ({setUser}) => {
                     <div className="px-4 mt-2 text-xs text-foreground-2">
                         Found {sievedTransactions.length} transactions.
                     </div>
-
                 </VStack>
                 
                 
@@ -80,7 +79,7 @@ const Cashflow = ({setUser}) => {
                     categories={categories} 
                 />
             </VStack>
-            <VStack className='w-full h-full bg-background-4'>
+            <VStack className='w-full h-full bg-black'>
                 <HStack className='p-2'>
                     <TransactionsFileInput setAllTransactions={setAllTransactions}/>
                     <CashflowUserInfo user={currentUser} setUser={setUser}/>
@@ -94,6 +93,7 @@ const Cashflow = ({setUser}) => {
                     setSelectedCategoryId={setSelectedCategoryId} 
                     categories={categories}
                 />
+                {/* <LuminousPieChart transactions={sievedTransactions}/> */}
             </VStack>
             
 

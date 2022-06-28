@@ -21,23 +21,18 @@ const TransactionElementMeta = ({ meta }) => {
     const [hidden, setHidden] = useState(true)
     return (
 
-        <VStack className="p-2 gap-3 text-left  rounded bg-background-1 textbackground-2">
-            <HStack className='gap-2'>
-                <FaLock />
+        <VStack className="gap-3 text-left  rounded ">
+            <HStack className={`gap-2`}>
+                <BounceButton onClick={() => setHidden(!hidden)}>
+                        <FiChevronRight className={`${hidden ? '': 'rotate-90'}`}/>
+                </BounceButton>
                 <div className="whitespace-nowrap">
-                    {meta["Other Party"]}
+                    {meta["Other Party"].replaceAll('"', '')}
                 </div>
-                <HStack className='w-full justify-end'>
-                    <BounceButton onClick={() => setHidden(!hidden)}>
-                        <FiChevronRight />
-                    </BounceButton>
-                </HStack>
-
-
             </HStack>
 
             {!hidden && (
-                <div>
+                <div className="rounded p-3 bg-background-1 text-foreground-2">
                     {Object.entries(meta).sort().map((a, b) => (
                         <HStack className='gap-2'>
                             <div className="w-full font-bold">{a[0]}</div>

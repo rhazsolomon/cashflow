@@ -25,7 +25,7 @@ function getThemeColors(theme) {
     'background-3': theme === 'dark' ? '#393B3D' : '#cccccc',
     'background-4': theme === 'dark' ? '#393B3D' : '#f4f4f4',
     'background-5': theme === 'dark' ? '#2b2b2b' : '#f4f4f4',
-    'foreground-1': theme === 'dark' ? '#dddddd' : '#666666', 
+    'foreground-1': theme === 'dark' ? '#A5A6A6' : '#666666', 
     'foreground-2': theme === 'dark' ? '#5F6062' : '#5F6062',
     'tag-1': theme === 'dark' ? '#ff0000': '#660000', 
     'tag-2': theme === 'dark' ? '#00ff00': '#ff0000', 

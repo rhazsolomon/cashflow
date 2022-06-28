@@ -27,22 +27,22 @@ const PieChartValue = ({ data, d }) => {
 }
 
 
-const PieChartLegend = ({tagColorMap, setTagColorMap}) => {
-    const LegendRow = ({tag, color}) => {
+const PieChartLegend = ({ tagColorMap, setTagColorMap }) => {
+    const LegendRow = ({ tag, color }) => {
         return (
             <HStack className='gap-2'>
-                <input 
-                    type={"color"} 
-                    value={color} 
-                    onChange={e => setTagColorMap({...tagColorMap, [tag]: e.target.value })
-                }/>
+                <input
+                    type={"color"}
+                    value={color}
+                    onChange={e => setTagColorMap({ ...tagColorMap, [tag]: e.target.value })
+                    } />
                 {tag}
             </HStack>
         )
     }
     return (
         <HStack className='gap-2 w-1/2 items-center  flex-wrap'>
-            {Object.entries(tagColorMap).map((a) => (<LegendRow tag={a[0]} color={a[1]}/>))}
+            {Object.entries(tagColorMap).map((a) => (<LegendRow tag={a[0]} color={a[1]} />))}
         </HStack>
     )
 }
@@ -66,21 +66,21 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
         ]
         const initialTagColorMap = {}
         for (let i in tags) {
-            initialTagColorMap[tags[i]] = defaultColors[i%defaultColors.length]
+            initialTagColorMap[tags[i]] = defaultColors[i % defaultColors.length]
         }
         return initialTagColorMap
     }
     const allTags = getAllTags(transactions)
-    
+
     const [tagColorMap, setTagColorMap] = useState(generateTagColorMap(allTags))
-    
+
     useEffect(() => {
         const allTags = getAllTags(transactions)
         setTagColorMap(generateTagColorMap(allTags))
     }, [transactions])
 
     const data = computePieDataFromTransactionTags(transactions)
-    
+
     const computeSegmentsShift = (i) => {
         if (data[i].name === selectedCategoryId) { return 4 }
         return 0
@@ -130,15 +130,39 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
                             labelStyle={{}}
                         />
                     </div>
-                    <PieChartValue 
+                    <PieChartValue
                         data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
                 </div>
             </HStack>
-            <PieChartLegend tagColorMap={tagColorMap} setTagColorMap={setTagColorMap}/>
+            <PieChartLegend tagColorMap={tagColorMap} setTagColorMap={setTagColorMap} />
         </VStack>
-        
-        
+
+
     )
 }
 
 export default TransactionsPieChart;
+
+export const LuminousPieChart = ({ transactions }) => {
+    const data = computePieDataFromTransactionTags(transactions)
+
+
+   
+
+    return (
+        
+                <Pie
+                    key={'234'}
+                    data={[{'name': 'hello', 'value': 34}]}
+                    lineWidth={40}
+                    segmentsShift={0}
+                    rounded={false}
+                    radius={40}
+                    label={() => { }}
+                    labelPosition={50}
+                    labelStyle={{}}
+                />
+            
+    )
+
+}
