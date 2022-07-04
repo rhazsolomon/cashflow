@@ -1,4 +1,4 @@
-import { initializeApp, registerVersion } from 'firebase/app'
+import { initializeApp } from 'firebase/app'
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import {
     getFirestore,
