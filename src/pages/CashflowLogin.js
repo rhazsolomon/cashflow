@@ -10,8 +10,8 @@ import { createUser } from "../backend/backend"
 
 
 const SignInForm = ({ setUser }) => {
-    const [email, setEmail] = useState("rhaz.solomon@gmail.com")
-    const [password, setPassword] = useState("2252B87F-47EB-4816-A844-736941640203")
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
     const onClick = async () => {
         let user = await signIn(email, password)
         setUser(user.id)
