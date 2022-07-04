@@ -1,18 +1,24 @@
 import { v4 as uuidv4 } from 'uuid';
 
 export class User {
-    constructor(id, name, uid, isTestUser = true) {
+    constructor(id, name, uid, email, created, isTestUser = true) {
         this.id = id
         this.name = name
+        this.email = email
         this.uid = uid
+        this.created = created
         this.isTestUser = true
-        if (isTestUser === null) {
-            this.isTestUser = true
-        }
+    }
+
+    static create(name, uid, email) {
+        console.log(name, uid, email, "User.create")
+        const id = `user_${uuidv4()}`
+        const created = new Date()
+        return new User(id, name, uid, email, created, false)
     }
 
     static createFromData(data) {
-        return new User(data.id, data.name, data.uid, data?.isTestUser)
+        return new User(data.id, data.name, data.uid, data.email, data.created, data?.isTestUser)
     }
 }
 export class Transaction {

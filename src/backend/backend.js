@@ -1,5 +1,5 @@
 import { async } from "@firebase/util"
-import { addTransaction } from "./db"
+import { addTransaction, register } from "./db"
 import { Transaction } from "./model"
 import { DefaultDict, parseCSV, sample } from "./util"
 
@@ -136,5 +136,13 @@ export function computePieDataFromTransactions(transactions) {
         })
     }
     const ret = data.sort((a, b) => a.name.localeCompare(b.name))
+    return ret
+}
+
+export async function createUser(fullName, email, password) {
+    console.log("creating user...")
+    const ret =  await register(fullName, email, password)
+    console.log("created user")
+    console.log(ret)
     return ret
 }

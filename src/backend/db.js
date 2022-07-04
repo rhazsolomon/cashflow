@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { initializeApp, registerVersion } from 'firebase/app'
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import {
     getFirestore,
     getDocs,
@@ -90,26 +90,27 @@ export async function addTag(userId, label) {
 }
 
 
-export async function addUser(name, email) {
+export async function addUser(user) {
     const userCol = collection(db, 'user')
 
     // Check for duplicates
-    const q = await query(userCol, where("email", "==", email))
+    const q = await query(userCol, where("email", "==", user.email))
     const querySnapshot = await getDocs(q)
     if (querySnapshot.docs.length) {
         const l = querySnapshot.docs[0].data().id
-
         return null
     }
 
-    const newUserId = `user_${uuidv4()}`
-    await setDoc(doc(db, 'user', newUserId), {
-        id: newUserId,
-        email: email,
-        name: name,
-        created: new Date()
+    console.log(user)
+    await setDoc(doc(db, 'user', user.id), {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        created: user.created,
+        isTestUser: user.isTestUser,
+        uid: user.uid
     })
-    return newUserId
+    return user
 }
 
 export async function updateTransactionTags(transaction, tags) {
@@ -195,8 +196,7 @@ export function streamTags(snapshot, error) {
 }
 
 export async function getUserWithUID(uid) {
-    console.log("A")
-    console.log(currentUser)
+    console.log(typeof(uid), "getUserWithUID")
     const userRef = collection(db, 'user')
     const q = query(userRef, where("uid", "==", uid), limit(1))
     const qSnapshot = await getDocs(q)
@@ -208,6 +208,17 @@ export async function getUserWithUID(uid) {
 }
 export async function signIn(email, password) {
     const userCred = await signInWithEmailAndPassword(auth, email, password)
+    console.log(userCred, "signIn34")
     currentUser = await getUserWithUID(userCred.user.uid)
+    console.log(currentUser, "signIn")
     return currentUser
+}
+
+export async function register(name, email, password) {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    console.log(userCredential, "register")
+    const user = User.create(name, userCredential.user.uid, email)
+    currentUser = user
+    await addUser(user)
+    return user
 }

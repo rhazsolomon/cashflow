@@ -1,91 +1,52 @@
 import { useState } from "react"
-import HStack from "../components/HStack"
 import VStack from "../components/VStack"
 import { signIn } from "../backend/db"
 import Cashflow from "./Cashflow"
-import { FiUser, FiLock } from "react-icons/fi"
-import { FaUser } from "react-icons/fa"
 import BounceButton from "../components/BounceButton"
 import FriendlyGraphic from "../components/FriendlyGraphic"
+import Button from "../components/base/Button"
+import Input from "../components/base/Input"
+import { createUser } from "../backend/backend"
 
 
-
-
-
-
-
-const EmailInput = ({ setValue }) => {
-    return (
-        <HStack className="px-6 gap-3 py-2 w-full bg-background-2 rounded-full border-background-3   border-[1px] text-foreground-1">
-            <FiUser className="text-foreground-2"/>
-            <input
-                className="bg-transparent placeholder:text-foreground-2"
-                placeholder="email"
-                onChange={(e) => setValue(e.target.value)}>
-            </input>
-        </HStack>
-
-    )
-}
-
-const PasswordInput = ({ setValue }) => {
-    return (
-        <HStack className="px-6 py-2 w-full bg-background-2 rounded-full border-background-3 border-[1px] gap-3 text-foreground-1" >
-            
-            <FiLock className="text-foreground-2"/>
-            <input
-                className="bg-transparent focus:border-debug  placeholder:text-foreground-2"
-                type="password"
-                onChange={(e) => setValue(e.target.value)}
-                placeholder="password"
-            />
-        </HStack>
-    
-    )
-}
 const SignInForm = ({ setUser }) => {
-
-    const [email, setEmail] = useState(null)
-    const [password, setPassword] = useState(null)
-    const signInAndSet = async () => {
-        const user = await signIn(email, password)
+    const [email, setEmail] = useState("rhaz.solomon@gmail.com")
+    const [password, setPassword] = useState("2252B87F-47EB-4816-A844-736941640203")
+    const onClick = async () => {
+        let user = await signIn(email, password)
         setUser(user.id)
     }
     return (
-
-        <form className="h-full">
-            <div className="flex flex-col   justify-center items-center  text-black gap-2">
-                <EmailInput setValue={setEmail} />
-                <PasswordInput setValue={setPassword} />
-                <HStack className="gap-6 m-6">
-                    <BounceButton>
-                        <div className="text-foreground-2">register</div>
-                    </BounceButton>
-                    <BounceButton className="bg-primary px-10 py-3 text-foreground-1 rounded-full">
-                        <div onClick={(e) => { e.preventDefault(); signInAndSet() }}>Sign In</div>
-                    </BounceButton>
-            
-                </HStack>
-                
-            </div>
-
-        </form>
-            
-        
-
-
+        <div className="flex flex-col justify-center items-center text-black gap-2">
+            <Input type={'email'} value={email} setValue={setEmail} />
+            <Input type={'password'} value={password} setValue={setPassword} />
+            <Button onClick={onClick}>
+                Sign In
+            </Button>
+        </div>
     )
-
 }
 
 const RegisterForm = ({ setUser }) => {
+    const [fullName, setFullName] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [confirmPassword, setConfirmPassword] = useState(null)
+    const onClick = async () => {
+        const user = await createUser(fullName, email, password)
+        console.log(user.id, "here")
+        setUser(user.id)
+    }
     return (
         <VStack className='h-full '>
-            
+            <Input type={'text'} value={fullName} setValue={setFullName}/>
+            <Input type={'email'} value={email} setValue={setEmail}/>
+            <Input type={'password'} value={password} setValue={setPassword}/>
+            <Input type={'password'} value={confirmPassword} setValue={setConfirmPassword}/>
+            <Button onClick={onClick}>Register</Button>
             <BounceButton
                 className='h-auto p-6  border-[1px] bg-primary px-10 py-3 text-foreground-1 rounded-full'
                 onClick={async () => {
-                    console.log("Hello world")
                     let user = await signIn("test-user@test.com", "123456")
                     setUser(user.id)
                 }}
@@ -138,7 +99,7 @@ const CashflowLogin = () => {
     return (
         <div>
             {!user && <WelcomeForm setUser={setUser} />}
-            {user && <Cashflow setUser={setUser}/>}
+            {user && <Cashflow user={user} setUser={setUser}/>}
         </div>
     )
 

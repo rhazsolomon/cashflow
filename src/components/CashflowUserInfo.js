@@ -4,7 +4,7 @@ import HStack from "./HStack";
 
 
 const CashflowUserInfo = ({user, setUser}) => {
-    console.log(user)
+    console.log(user, "CashflowUserInfo")
     return (
         <HStack 
             className="w-min whitespace-nowrap gap-2 p-3"

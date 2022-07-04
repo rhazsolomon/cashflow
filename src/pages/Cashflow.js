@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import VStack from "../components/VStack";
 
 import TransactionsPieChart, { LuminousPieChart } from "../components/TransactionsPieChart";
-import { streamTransactions, streamCategories, streamTags, currentUser } from "../backend/db";
+import { streamTransactions, streamCategories, streamTags } from "../backend/db";
 
 import TransactionList from "../components/TransactionList";
 import TransactionFilter from "../components/TransactionFilter";
@@ -13,7 +13,7 @@ import { Transaction } from "../backend/model";
 import HStack from "../components/HStack";
 import { TransactionModifier } from "../components/TransactionModifier";
 
-const Cashflow = ({setUser}) => {
+const Cashflow = ({user, setUser}) => {
 
     const [allTransactions, setAllTransactions] = useState([])
     const [sievedTransactions, setSievedTransactions] = useState([])
@@ -51,6 +51,7 @@ const Cashflow = ({setUser}) => {
         }
     }, [setAllTransactions])
 
+    
     return (
         <div className='flex flex-col-reverse md:flex-row h-screen items-center bg-background-1 text-foreground-1 w-screen font-rhaz text-sm'>
             <VStack className='overflow-y-auto h-full bg-background-2 min-w-[400px] w-full max-w-2xl  border-r-background-3 border-r-[1px]'>
@@ -82,9 +83,9 @@ const Cashflow = ({setUser}) => {
             <VStack className='w-full h-full bg-black'>
                 <HStack className='p-2'>
                     <TransactionsFileInput setAllTransactions={setAllTransactions}/>
-                    <CashflowUserInfo user={currentUser} setUser={setUser}/>
+                    <CashflowUserInfo user={user} setUser={setUser}/>
                 </HStack>
-                { currentUser.isTestUser && (
+                { user.isTestUser && (
                         <CashflowUtilities setAllTransactions={setAllTransactions} allTransactions={allTransactions}/>
                     )}
                 <TransactionsPieChart 

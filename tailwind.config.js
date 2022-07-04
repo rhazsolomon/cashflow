@@ -42,8 +42,8 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    colors: getThemeColors('dark'),
-    // colors: getThemeColors('light'),
+    // colors: getThemeColors('dark'),
+    colors: getThemeColors('light'),
     extend: {
       animation: {
         'bounce-slow-1': 'bounce 3s infinite',
