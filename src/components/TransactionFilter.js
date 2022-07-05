@@ -145,13 +145,14 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag, includesString, allTransactions, doShowOutgoing])
 
     return (
-        <VStack className=' px-4 w-full h-auto gap-2 '>
+        <VStack className=' m-4 p-4 w-auto h-auto gap-2 border-2 rounded-md '>
             <FilterFreeTextInput 
                 setAmountLower={setAmountLower}
                 setAmountUpper={setAmountUpper}
                 setIncludesString={setIncludesString}
                 setTag={setTag}
             />
+            
             <input type={"checkbox"} value={doShowOutgoing} onChange={(e) => {setDoShowOutgoing(e.target.checked); console.log(e.target.value)}} />
             
         </VStack>

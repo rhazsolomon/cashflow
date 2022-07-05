@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { PieChart as Pie } from "react-minimal-pie-chart";
+
 import { computePieDataFromTransactionTags, getAllTags } from "../backend/backend";
 import HStack from "./HStack";
 import VStack from "./VStack";
 
-const PieChartValue = ({ data, d }) => {
+const PieChartValue = ({ data, d, className }) => {
     const total = data.reduce((a, b) => a + b.value, 0)
     return (
-        <div className="flex flex-col h-full justify-center items-center content-center">
+        <div className={`flex flex-col h-full justify-center items-center content-center ${className}`}>
             {d && (
                 <div
                     className="text-2xl font-medium"
@@ -131,10 +132,15 @@ const TransactionsPieChart = ({ transactions, selectedCategoryId, setSelectedCat
                         />
                     </div>
                     <PieChartValue
-                        data={data} d={data.filter(d => d.name === selectedCategoryId)[0]} />
+                        className={"bg-primary"}
+                        data={data} 
+                        d={data.filter(d => d.name === selectedCategoryId)[0]} 
+                    />
+                    
                 </div>
             </HStack>
             <PieChartLegend tagColorMap={tagColorMap} setTagColorMap={setTagColorMap} />
+            
         </VStack>
 
 
