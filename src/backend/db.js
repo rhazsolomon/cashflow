@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, onAuthStateChanged, signOut } from 'firebase/auth'
 import {
     getFirestore,
     getDocs,
@@ -32,7 +32,19 @@ const firebaseApp = initializeApp({
 })
 
 const db = getFirestore(firebaseApp)
-const auth = getAuth()
+export const auth = getAuth(firebaseApp)
+
+export function setOnAuthChange(f) {
+    onAuthStateChanged(auth, async (user) => {
+        console.log(user, "onAuthStateChanged")
+        if (user) {
+            currentUser = await getUserWithUID(user.uid)
+        } else {
+            currentUser = null
+        }
+        f(currentUser)   
+    })
+}
 
 async function getData(userId, label) {
     const userCol = collection(db, 'user')
@@ -134,28 +146,6 @@ export async function addTransaction(transaction) {
     return transaction
 }
 
-export async function createNewUserWithDefaults(name, email) {
-
-    const userId = await addUser(name, email)
-    if (userId == null) { return null }
-
-    const categoryIds = await Promise.all([
-        addCategory(userId, 'Other', '#aaffff'),
-        addCategory(userId, 'Bills', '#aaff33'),
-        addCategory(userId, 'Food', '#aa22ff'),
-        addCategory(userId, 'Fun', '#aaddff'),
-    ])
-    const tagIds = await Promise.all([
-        addTag(userId, 'drunk'),
-        addTag(userId, 'holiday')
-    ])
-
-    addTransaction(userId, 5, Date.parse('2022-03-12'), [tagIds[0]], categoryIds[0])
-    addTransaction(userId, 3, Date.parse('2022-03-12'), [tagIds[0], tagIds[1]], categoryIds[1])
-    addTransaction(userId, 10, Date.parse('2022-03-12'), [], categoryIds[1])
-    addTransaction(userId, 20, Date.parse('2022-03-12'), [tagIds[1]], categoryIds[2])
-    return userId
-}
 
 export async function deleteTransaction(transactionId) {
     const userCol = collection(db, 'user')
@@ -207,6 +197,7 @@ export async function getUserWithUID(uid) {
     return res
 }
 export async function signIn(email, password) {
+    await setPersistence(auth, browserLocalPersistence)
     const userCred = await signInWithEmailAndPassword(auth, email, password)
     console.log(userCred, "signIn34")
     currentUser = await getUserWithUID(userCred.user.uid)
@@ -215,10 +206,16 @@ export async function signIn(email, password) {
 }
 
 export async function register(name, email, password) {
+    await setPersistence(auth, browserLocalPersistence)
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     console.log(userCredential, "register")
     const user = User.create(name, userCredential.user.uid, email)
     currentUser = user
     await addUser(user)
     return user
+    
+}
+
+export async function cashflowSignOut() {
+    await signOut(auth)
 }

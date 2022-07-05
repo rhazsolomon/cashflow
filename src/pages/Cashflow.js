@@ -30,25 +30,7 @@ const Cashflow = ({user, setUser}) => {
             },
             (error) => { console.log(error, "Error dude. (RS01)") }
         )
-        const unsubscribeCategories = streamCategories(
-            (querySnapshot) => {
-                const updatedCategories = querySnapshot.docs.map(d => d.data())
-                setCategories(updatedCategories)
-            },
-            (error) => { console.log(error, "Error dude. (RS02)") }
-        )
-        const unsubscribeTags = streamTags(
-            (querySnapshot) => {
-                const updatedTags = querySnapshot.docs.map(d => d.data())
-                setTags(updatedTags)
-            },
-            (error) => { console.log(error, "Error dude. (RS03)") }
-        )
-        return () => {
-            unsubscribeTransactions()
-            unsubscribeCategories()
-            unsubscribeTags()
-        }
+        return unsubscribeTransactions
     }, [setAllTransactions])
 
     

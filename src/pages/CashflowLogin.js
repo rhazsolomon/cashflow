@@ -1,6 +1,6 @@
 import { useState } from "react"
 import VStack from "../components/VStack"
-import { signIn } from "../backend/db"
+import { setOnAuthChange, signIn } from "../backend/db"
 import Cashflow from "./Cashflow"
 import BounceButton from "../components/BounceButton"
 import FriendlyGraphic from "../components/FriendlyGraphic"
@@ -10,8 +10,8 @@ import { createUser } from "../backend/backend"
 
 
 const SignInForm = ({ setUser }) => {
-    const [email, setEmail] = useState(null)
-    const [password, setPassword] = useState(null)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const onClick = async () => {
         let user = await signIn(email, password)
         setUser(user.id)
@@ -96,6 +96,7 @@ const WelcomeForm = ({ setUser }) => {
 const CashflowLogin = () => {
     const [user, setUser] = useState(null)
 
+    setOnAuthChange(setUser)
     return (
         <div>
             {!user && <WelcomeForm setUser={setUser} />}

@@ -97,6 +97,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
     const [amountLower, setAmountLower] = useState(null)
     const [amountUpper, setAmountUpper] = useState(null)
     const [tag, setTag] = useState(null)
+    const [doShowOutgoing, setDoShowOutgoing] = useState(true)
 
     const [orderBy, setOrderBy] = useState("Amount")
     const [orderAscending, setOrderAscending] = useState(true)
@@ -113,6 +114,12 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
             return false
         }
         if (includesString && !JSON.stringify(a.meta).toLowerCase().includes(includesString.toLowerCase())) {
+            return false
+        }
+        if (doShowOutgoing && a.amount > 0) {
+            return false
+        }
+        if (!doShowOutgoing && a.amount < 0) {
             return false
         }
         return true
@@ -134,7 +141,8 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
             .sort(sortTransactions)
         )
     }
-    useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag, includesString, allTransactions])
+    
+    useEffect(sieveAndUpdate, [orderAscending, amountLower, amountUpper, tag, includesString, allTransactions, doShowOutgoing])
 
     return (
         <VStack className=' px-4 w-full h-auto gap-2 '>
@@ -144,6 +152,7 @@ const TransactionFilter = ({ setSievedTransactions, allTransactions }) => {
                 setIncludesString={setIncludesString}
                 setTag={setTag}
             />
+            <input type={"checkbox"} value={doShowOutgoing} onChange={(e) => {setDoShowOutgoing(e.target.checked); console.log(e.target.value)}} />
             
         </VStack>
         

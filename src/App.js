@@ -9,6 +9,11 @@ import {
 import CashflowAdmin from './pages/CashflowAdmin';
 import CashflowLogin from './pages/CashflowLogin';
 
+window.addEventListener("scroll", (e) => {
+  e.preventDefault();
+  window.scrollTo(0, 0);
+});
+
 function App() {
   return (
     <Router>
